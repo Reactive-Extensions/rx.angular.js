@@ -1,0 +1,47 @@
+{
+  "name": "rx-angular",
+  "title": "The Reactive Extensions Bindings for the AngularJS.",
+  "description": "Library for bridging between RxJS and AngularJS.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Reactive-Extensions/rx.angular.js",
+  "author": {
+    "name": "MS Open Tech"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Reactive-Extensions/rx.angular.js.git"
+  },
+  "licenses": [
+    {
+      "type": "Apache License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
+  "dependencies": {
+    "rx": "*"  
+  },
+  "devDependencies": {
+    "grunt-cli": "*",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-watch": "*"
+  },
+  "jam": {
+    "main": "rx.angular.js"
+  },  
+  "keywords": [
+    "Reactive",
+    "FRP",
+    "Rx",
+    "RxJS",
+    "AngularJS",
+    "Angular"
+  ],
+  "main": "rx.angular.js",
+  "scripts": {
+    "test": "grunt"
+  }  
+}
