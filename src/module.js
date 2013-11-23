@@ -1,1 +1,1 @@
-	var rxModule = angular.module('rx', []);
+    var rxModule = angular.module('rx', []);
