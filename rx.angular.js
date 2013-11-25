@@ -28,7 +28,7 @@
         root = freeGlobal;
     }
    
-	var rxModule = angular.module('rx', []);
+    var rxModule = angular.module('rx', []);
 
     rxModule.factory('rx', function($window) {
         if(!$window.Rx) {
@@ -66,7 +66,15 @@
                             }
                         
                             // Returns function which disconnects the $watch expression
-                            return scope.$watch(watchExpression, listener, objectEquality);
+                            var unbind = scope.$watch(watchExpression, listener, objectEquality);
+
+                            var disposable = Rx.Disposable.create(unbind);
+
+                            scope.$on('$destroy', function(){
+                                disposable.dispose();
+                            });
+
+                            return disposable;
                         });
                     },
                     enumerable: false

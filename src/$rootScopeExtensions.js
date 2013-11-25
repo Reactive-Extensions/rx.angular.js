@@ -13,7 +13,15 @@
                             }
                         
                             // Returns function which disconnects the $watch expression
-                            return scope.$watch(watchExpression, listener, objectEquality);
+                            var unbind = scope.$watch(watchExpression, listener, objectEquality);
+
+                            var disposable = Rx.Disposable.create(unbind);
+
+                            scope.$on('$destroy', function(){
+                                disposable.dispose();
+                            });
+
+                            return disposable;
                         });
                     },
                     enumerable: false
