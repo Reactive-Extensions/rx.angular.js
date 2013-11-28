@@ -18,7 +18,7 @@
     }
   ],
   "dependencies": {
-    "rx": "*"  
+    "rx": "*"
   },
   "devDependencies": {
     "grunt-cli": "*",
@@ -27,11 +27,12 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-concat": "*",
     "grunt-contrib-qunit": "*",
-    "grunt-contrib-watch": "*"
+    "grunt-contrib-watch": "*",
+    "grunt-conventional-changelog": "~1.0.0"
   },
   "jam": {
     "main": "rx.angular.js"
-  },  
+  },
   "keywords": [
     "Reactive",
     "FRP",
@@ -43,5 +44,5 @@
   "main": "rx.angular.js",
   "scripts": {
     "test": "grunt"
-  }  
+  }
 }

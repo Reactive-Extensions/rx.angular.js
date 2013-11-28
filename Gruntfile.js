@@ -41,6 +41,11 @@ module.exports = function (grunt) {
         },
         qunit: {
             all: ['tests/*.html']
+        },
+        changelog: {
+          options: {
+            dest: 'CHANGELOG.md'
+          }
         }
     });
 
@@ -49,6 +54,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-conventional-changelog');
 
     grunt.registerTask('nuget', 'Register NuGet-RxJS-Angular', function () {
         var done = this.async();
