@@ -25,4 +25,7 @@
     if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
         root = freeGlobal;
     }
-   
+
+    // Headers
+    var observable = Rx.Observable,
+        observableProto = observable.prototype;
