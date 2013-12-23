@@ -26,9 +26,11 @@ module.exports = function (grunt) {
                 src: [
                     'src/license.js',
                     'src/intro.js',
+                    'src/utils.js',
                     'src/module.js',
                     'src/factory.js',
                     'src/observeonscope.js',
+                    'src/safeApply.js',
                     'src/$rootScopeExtensions.js',
                     'src/outro.js'
                 ],
