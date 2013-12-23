@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 
-    require('load-grunt-tasks')(grunt);
+    //require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -26,7 +26,6 @@ module.exports = function (grunt) {
                 src: [
                     'src/license.js',
                     'src/intro.js',
-                    'src/utils.js',
                     'src/module.js',
                     'src/factory.js',
                     'src/observeonscope.js',
@@ -52,6 +51,12 @@ module.exports = function (grunt) {
           }
         }
     });
+
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-qunit');    
+    grunt.loadNpmTasks('grunt-conventional-changelog');
+
 
     grunt.registerTask('nuget', 'Register NuGet-RxJS-Angular', function () {
         var done = this.async();

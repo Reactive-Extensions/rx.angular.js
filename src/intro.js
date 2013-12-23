@@ -29,3 +29,10 @@
     // Headers
     var observable = Rx.Observable,
         observableProto = observable.prototype;
+
+    // Utilities
+    var toString = {}.toString;
+    function isFunction (fn) {
+        return toString.call(fn) === '[object Function]';
+    }
+    function noop () {}

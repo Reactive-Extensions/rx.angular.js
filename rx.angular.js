@@ -32,9 +32,13 @@
     var observable = Rx.Observable,
         observableProto = observable.prototype;
 
-    var isFunction = function(fn){
-        return typeof fn === 'function'
-    };
+    // Utilities
+    var toString = {}.toString;
+    function isFunction (fn) {
+        return toString.call(fn) === '[object Function]';
+    }
+    function noop () {}
+
     var rxModule = angular.module('rx', []);
 
     rxModule.factory('rx', function($window) {
@@ -60,7 +64,7 @@
 
     observableProto.safeApply = function($scope, fn){
 
-        fn = isFunction(fn) ? fn : function(){};
+        fn = isFunction(fn) ? fn : noop;
 
         return this.doAction(function(data){
             ($scope.$$phase || $scope.$root.$$phase) ? fn(data) : $scope.$apply(function(){
