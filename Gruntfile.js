@@ -67,7 +67,7 @@ module.exports = function (grunt) {
             args: [
                 //specify the .nuspec file
                 "pack",
-                "nuget/RxJS-Bridges-Angular/RRxJS-Bridges-Angular.nuspec",
+                "nuget/RxJS-Bridges-Angular/RxJS-Bridges-Angular.nuspec",
 
                 //specify where we want the package to be created
                 "-OutputDirectory",
