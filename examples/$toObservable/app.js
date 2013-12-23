@@ -1,7 +1,7 @@
 ;(function (undefined) {
 
     angular.module('example', ['rx'])
-        .controller('AppCtrl', function($scope, $http) {
+        .controller('AppCtrl', function($scope, $http, rx) {
             
             $scope.search = '';
             $scope.results = [];
@@ -18,7 +18,7 @@
                         }
                     });
 
-                return Rx.Observable
+                return rx.Observable
                          .fromPromise(deferred)
                          .select(function(response){
                              return response.data[1];
