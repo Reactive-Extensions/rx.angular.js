@@ -1,6 +1,6 @@
 module('$rootScopeExtension');
 
-//this doesn't feel right. We want to whether the the unbind function
+//this doesn't feel right. We want to test whether the unbind function
 //of a $watch was called.
 //So what we do is, we redefine the $watch method so that we can
 //intercept the unbind function to know if it was called or not.
@@ -25,7 +25,7 @@ var createScopeTestHelper = function(scope){
     }
 };
 
-test('can subscibe', function () {
+test('can subscribe', function () {
     var injector = angular.injector(['ng', 'rx']);
 
     var scope = injector.get('$rootScope').$new();
@@ -101,4 +101,43 @@ test('dispose calls unbind function which was returned from $watch', function ()
 
     ok(scopeTestHelper.calledUnbind(), 'called the unbind function');
     ok(disposable.m.current.isDisposed,'called dispose on the disposable');
+});
+
+
+test('can add observable function to scope', function () {
+    var injector = angular.injector(['ng', 'rx']);
+
+    var scope = injector.get('$rootScope').$new();
+
+    var calledSubscribe = false,
+        calledWith;
+
+    scope
+        .$createObservableFunction('clickMe')
+        .subscribe(function(val){
+            calledSubscribe = true;
+            calledWith = val;
+        });
+
+    scope.$apply(function(){
+        scope.clickMe('test');
+    });
+
+    ok(calledSubscribe);
+    ok(calledWith === 'test',
+       'created function was not called with correct parameters');
+});
+
+test('observable function removed from scope when disposed', function () {
+    var injector = angular.injector(['ng', 'rx']);
+
+    var scope = injector.get('$rootScope').$new();
+
+    var subscription = scope
+        .$createObservableFunction('clickMe')
+        .subscribe(function(val){});
+
+    subscription.dispose();
+
+    ok(scope.clickMe === undefined);
 });
