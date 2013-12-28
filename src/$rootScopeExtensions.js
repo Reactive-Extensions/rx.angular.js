@@ -28,6 +28,32 @@
                 });
 
 
+                Object.defineProperty($delegate.constructor.prototype, '$createObservableFunction', {
+                    value: function(functionName, listener) {
+                        var scope = this;
+
+                        return Rx.Observable.create(function (observer) {
+                            scope[functionName] = function () {
+                                if ( undefined !== listener ) {
+                                    observer.onNext(
+                                        listener.apply(this, arguments));
+                                } else if ( 1 === arguments.length ) {
+                                    observer.onNext(arguments[0]);
+                                } else {
+                                    observer.onNext(arguments);
+                                }
+                            };
+
+                            return function () {
+                                // Remove our listener function from the scope.
+                                delete scope[functionName];
+                            };
+                        });
+                    },
+                    enumerable: false
+                });
+
+
                 return $delegate;
             }]);
         }]);
