@@ -28,7 +28,8 @@
 
     // Headers
     var observable = Rx.Observable,
-        observableProto = observable.prototype;
+        observableProto = observable.prototype,
+        observableCreate = observable.create;
 
     // Utilities
     var toString = {}.toString;

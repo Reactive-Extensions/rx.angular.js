@@ -89,5 +89,5 @@ module.exports = function (grunt) {
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['concat:basic', 'uglify:basic', 'qunit']);
+    grunt.registerTask('default', ['concat:basic', 'uglify:basic', 'qunit', 'changelog']);
 };

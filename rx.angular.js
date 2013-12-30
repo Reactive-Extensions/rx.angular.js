@@ -30,7 +30,8 @@
 
     // Headers
     var observable = Rx.Observable,
-        observableProto = observable.prototype;
+        observableProto = observable.prototype,
+        observableCreate = observable.create;
 
     // Utilities
     var toString = {}.toString;
@@ -72,15 +73,14 @@
             });
         });
     };
+    rxModule.config(['$provide', function($provide) {
+        $provide.decorator('$rootScope', ['$delegate', function($delegate) {
 
-    rxModule
-        .config(['$provide', function($provide){
-            $provide.decorator('$rootScope', ['$delegate', function($delegate){
-
-                Object.defineProperty($delegate.constructor.prototype, '$toObservable', {
+            Object.defineProperties($delegate.constructor.prototype, {
+                '$toObservable': {
                     value: function(watchExpression, objectEquality) {
                         var scope = this;
-                        return Rx.Observable.create(function (observer) {
+                        return observableCreate(function (observer) {
                             // Create function to handle old and new Value
                             function listener (newValue, oldValue) {
                                 observer.onNext({ oldValue: oldValue, newValue: newValue });
@@ -99,13 +99,34 @@
                         });
                     },
                     enumerable: false
-                });
+                },
+                '$createObservableFunction': {
+                    value: function(functionName, listener) {
+                        var scope = this;
 
+                        return observableCreate(function (observer) {
+                            scope[functionName] = function () {
+                                if (listener) {
+                                    observer.onNext(listener.apply(this, arguments));
+                                } else if (arguments.length === 1) {
+                                    observer.onNext(arguments[0]);
+                                } else {
+                                    observer.onNext(arguments);
+                                }
+                            };
 
-                return $delegate;
-            }]);
+                            return function () {
+                                // Remove our listener function from the scope.
+                                delete scope[functionName];
+                            };
+                        });
+                    },
+                    enumerable: false                        
+                }
+            });
+
+            return $delegate;
         }]);
-
-
+    }]);
 
 }.call(this));
