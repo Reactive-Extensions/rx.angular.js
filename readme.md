@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/Reactive-Extensions/rx.angular.js.png)](https://travis-ci.org/Reactive-Extensions/rx.angular.js)
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![NPM version](https://badge.fury.io/js/rx-angular.png)](http://badge.fury.io/js/rx-angular)
+
 # rx.angular.js - Reactive Extensions Bindings for AngularJS
 
 This library serves as a bridge between the [Reactive Extensions for JavaScript (RxJS)](https://github.com/Reactive-Extensions/RxJS) and [AngularJS](http://angularjs.org/).
