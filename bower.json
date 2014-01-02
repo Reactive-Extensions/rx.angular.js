@@ -1,7 +1,7 @@
 {
   "name": "rx-angular",
-  "version": "0.0.2",
-  "main": "rx.dom.js",
+  "version": "0.0.3",
+  "main": "rx.angular.js",
   "dependencies": {
     "rxjs": "*"
   },

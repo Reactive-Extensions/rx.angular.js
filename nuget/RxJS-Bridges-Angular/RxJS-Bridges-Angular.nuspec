@@ -4,7 +4,7 @@
     <id>RxJS-Bridges-Angular</id>
     <title>Reactive Extensions for JavaScript - Bridges to AngularJS</title>
     <!-- Automatically updated by build, keeping fixed dev build number here in case of local build -->
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <authors>MS Open Tech</authors>
     <description>This project provides Reactive Extensions for JavaScript (RxJS) bindings for AngularJS.</description>
     <projectUrl>https://github.com/Reactive-Extensions/rx.angular.js</projectUrl>
