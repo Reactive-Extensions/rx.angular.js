@@ -141,3 +141,24 @@ test('observable function removed from scope when disposed', function () {
 
     ok(scope.clickMe === undefined);
 });
+
+test('can subscribe to event observable', function () {
+    var injector = angular.injector(['ng', 'rx']);
+
+    var scope = injector.get('$rootScope').$new();
+
+    var EVENT_NAME  = 'somethingHappened',
+        PARAM1      = 'param1',
+        PARAM2      = 'param2';
+
+    scope
+        .$eventToObservable(EVENT_NAME)
+        .subscribe(function(data){
+            ok(data.event.name === EVENT_NAME);
+            ok(data.additionalArguments[0] === PARAM1);
+            ok(data.additionalArguments[1] === PARAM2);
+        });
+
+    scope.$emit(EVENT_NAME, PARAM1, PARAM2);
+});
+

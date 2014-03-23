@@ -26,14 +26,12 @@
                      * @name rx.$rootScope.$toObservable#value
                      *
                      * @description
-                     * Creates a disposable value and returns it. Expects a watch
-                     * expression and a compare object for equality rather than
-                     * reference.
+                     * Creates an observable from a watchExpression. 
                      *
                      * @param {(function|string)} watchExpression A watch expression.
                      * @param {boolean} objectEquality Compare object for equality.
                      *
-                     * @return {object} Disposable object.
+                     * @return {object} Observable.
                      */
                     value: function(watchExpression, objectEquality) {
                         var scope = this;
@@ -58,6 +56,59 @@
                     /**
                      * @ngdoc property
                      * @name rx.$rootScope.$toObservable#enumerable
+                     *
+                     * @description
+                     * Enumerable flag.
+                     */
+                    enumerable: false
+                },
+                /**
+                 * @ngdoc property
+                 * @name rx.$rootScope.$eventToObservable
+                 *
+                 * @description
+                 * Provides a method to create observable methods.
+                 */
+                '$eventToObservable': {
+                    /**
+                     * @ngdoc function
+                     * @name rx.$rootScope.$eventToObservable#value
+                     *
+                     * @description
+                     * Creates an Observable from an event which is fired on the local $scope.
+                     * Expects an event name as the only input parameter.
+                     *
+                     * @param {string} event name
+                     *
+                     * @return {object} Observable object.
+                     */
+                    value: function(eventName) {
+                        var scope = this;
+                        return observableCreate(function (observer) {
+                            function listener () {
+                                var data = {
+                                    'event': arguments[0],
+                                    'additionalArguments': slice.call(arguments, 1)
+                                };
+
+                                observer.onNext(data);
+                            }
+
+                            // Returns function which disconnects from the event binding
+                            var unbind = scope.$on(eventName, listener);
+
+                            var disposable = Rx.Disposable.create(unbind);
+
+                            scope.$on('$destroy', function(){
+                                disposable.dispose();
+                            });
+
+                            return disposable;
+                        });
+                    },
+                    /**
+                     * @ngdoc property
+                     * @name rx.$rootScope.$eventToObservable#enumerable
                      *
                      * @description
                      * Enumerable flag.
