@@ -26,14 +26,12 @@
                      * @name rx.$rootScope.$toObservable#value
                      *
                      * @description
-                     * Creates a disposable value and returns it. Expects a watch
-                     * expression and a compare object for equality rather than
-                     * reference.
+                     * Creates an observable from a watchExpression. 
                      *
                      * @param {(function|string)} watchExpression A watch expression.
                      * @param {boolean} objectEquality Compare object for equality.
                      *
-                     * @return {object} Disposable object.
+                     * @return {object} Observable.
                      */
                     value: function(watchExpression, objectEquality) {
                         var scope = this;
