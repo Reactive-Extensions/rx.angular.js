@@ -32,8 +32,11 @@
         observableCreate = observable.create;
 
     // Utilities
-    var toString = {}.toString;
+    var toString = {}.toString,
+        slice = Array.prototype.slice;
+
     function isFunction (fn) {
         return toString.call(fn) === '[object Function]';
     }
     function noop () {}
+
