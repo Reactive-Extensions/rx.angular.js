@@ -20,7 +20,8 @@
 
                 return rx.Observable
                          .fromPromise(deferred)
-                         .select(function(response){
+                         .retry(10) // Retry 10 times then give up
+                         .map(function(response){
                              return response.data[1];
                          });
             };
