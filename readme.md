@@ -87,7 +87,7 @@ This only scratches the surface of what is possible when you combine the two lib
 
 ## Dive In! ##
 
-You can find the documentation [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/doc) as well as examples [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples) and plenty of [unit tests](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/tests).
+You can find the documentation [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/docs) as well as examples [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples) and plenty of [unit tests](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/tests).
 
 ## Getting Started
 
