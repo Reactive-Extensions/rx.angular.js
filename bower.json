@@ -1,6 +1,6 @@
 {
   "name": "rx-angular",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "rx.angular.js",
   "dependencies": {
     "rxjs": "*"
