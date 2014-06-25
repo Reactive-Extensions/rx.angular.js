@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "main": "rx.angular.js",
   "dependencies": {
-    "rxjs": "*"
+    "Rx": "*"
   },
   "ignore": [
     ".*",
