@@ -105,7 +105,7 @@ There are a number of ways to get started with RxJS.
 
 ### Installing with [Bower](http://bower.io/)
 
-    bower install rx-angular
+    bower install angular-rx
 
 ### Installing with [Jam](http://jamjs.org/)
     
