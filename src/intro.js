@@ -27,7 +27,9 @@
     }
 
     // Headers
-    var observable = Rx.Observable,
+    
+    var Rx = window.Rx,
+        observable = Rx.Observable,
         observableProto = observable.prototype,
         observableCreate = observable.create;
 
