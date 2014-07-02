@@ -2,7 +2,7 @@
   "name": "rx-angular",
   "title": "The Reactive Extensions Bindings for the AngularJS.",
   "description": "Library for bridging between RxJS and AngularJS.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/Reactive-Extensions/rx.angular.js",
   "author": {
     "name": "MS Open Tech"
@@ -22,14 +22,12 @@
   },
   "devDependencies": {
     "grunt-cli": "*",
-    "grunt": "~0.4.1",
+    "grunt": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-concat": "*",
     "grunt-contrib-qunit": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-conventional-changelog": "~1.0.0",
-    "load-grunt-tasks": "~0.2.0"
+    "load-grunt-tasks": "*"
   },
   "jam": {
     "main": "rx.angular.js"
