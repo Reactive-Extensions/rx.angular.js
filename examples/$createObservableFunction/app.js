@@ -2,7 +2,7 @@
 
     angular.module('example', ['rx'])
         .controller('AppCtrl', function($scope, $http, rx) {
-            
+
             function searchWikipedia (term) {
                 var deferred = $http({
                         url: "http://en.wikipedia.org/w/api.php?&callback=JSON_CALLBACK",
@@ -16,7 +16,7 @@
 
                 return rx.Observable
                     .fromPromise(deferred)
-                    .map(function(response){ return response.data[1]; });                
+                    .map(function(response){ return response.data[1]; });
             }
 
             $scope.search = '';
@@ -24,11 +24,11 @@
 
             /*
                 The following code deals with:
-                 
-                Creates a "click" function which is an observable sequence instead of just a function.
+
+                Creates a "submit" function which is an observable sequence instead of just a function.
             */
-            $scope.$createObservableFunction('click')
-                .map(function () { return $scope.search; })
+            $scope.$createObservableFunction('submit')
+                .map(function (term) { return term; })
                 .flatMapLatest(searchWikipedia)
                 .subscribe(function(results) {
                     $scope.results = results;

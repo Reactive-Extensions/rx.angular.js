@@ -4,22 +4,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="utf-8">
   <title>RxJS for AngularJS Rocks</title>
-  <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/bootstrap/2.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
-<body>
-<div class="container" ng-app="example" ng-controller="AppCtrl">
-  <h2>Reactive Angular - Wikipedia Example</h2>
-  <input type="text" ng-model="search">
-  <button ng-click="click()">Search</button>
+<body ng-app="example">
+  <div class="container" ng-controller="AppCtrl">
 
-  <ul>
-    <li ng-repeat="result in results">{{result}}</li>
-  </ul>
+    <form ng-submit="submit(search)">
+      <h2>Reactive Angular - Wikipedia Example</h2>
+      <input type="text" ng-model="search">
+      <button>Search</button>
+    </form>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.10/rx.lite.compat.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  <script src="../../rx.angular.js"></script>
-  <script src="app.js"></script>
-</div>
+    <ul>
+      <li ng-repeat="result in results">
+        {{ result }}
+      </li>
+    </ul>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.27/rx.lite.compat.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="../../rx.angular.js"></script>
+    <script src="app.js"></script>
+  </div>
 </body>
-</html>  
+</html>
