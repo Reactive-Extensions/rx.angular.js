@@ -29,6 +29,7 @@ module.exports = function (grunt) {
             'src/observeonscope.js',
             'src/safeApply.js',
             'src/$rootScopeExtensions.js',
+            'src/observableRuntimeExtensions.js',
             'src/outro.js'
         ],
         dest: 'rx.angular.js'
