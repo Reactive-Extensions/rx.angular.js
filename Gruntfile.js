@@ -23,8 +23,8 @@ module.exports = function (grunt) {
       basic: {
         src: [
           'src/license.js',
-          'src/basicheader.js',
           'src/intro.js',
+          'src/basicheader.js',
           'src/module.js',
           'src/factory.js',
           'src/observeonscope.js',

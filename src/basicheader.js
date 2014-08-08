@@ -1,5 +1,4 @@
-  var Rx = window.Rx,
-    observable = Rx.Observable,
+  var observable = Rx.Observable,
     observableProto = observable.prototype,
     observableCreate = observable.create,
     disposableCreate = Rx.Disposable.create,

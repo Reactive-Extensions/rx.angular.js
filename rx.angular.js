@@ -1,7 +1,39 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
-  var Rx = window.Rx,
-    observable = Rx.Observable,
+;(function (root, factory) {
+  var objectTypes = {
+    'boolean': false,
+    'function': true,
+    'object': true,
+    'number': false,
+    'string': false,
+    'undefined': false
+  };
+
+  var root = (objectTypes[typeof window] && window) || this,
+    freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports,
+    freeModule = objectTypes[typeof module] && module && !module.nodeType && module,
+    moduleExports = freeModule && freeModule.exports === freeExports && freeExports,
+    freeGlobal = objectTypes[typeof global] && global;
+  
+  if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
+    root = freeGlobal;
+  }
+
+  // Because of build optimizers
+  if (typeof define === 'function' && define.amd) {
+    define(['rx', 'angular', 'exports'], function (Rx, angular, exports) {
+      root.Rx = factory(root, exports, Rx, jQuery);
+      return root.Rx;
+    });
+  } else if (typeof module == 'object' && module && module.exports == freeExports) {
+    module.exports = factory(root, module.exports, require('rx'), require('angular'));
+  } else {
+    root.Rx = factory(root, {}, root.Rx, root.angular);
+  }
+}(this, function (global, exp, Rx, angular, undefined) {
+
+  var observable = Rx.Observable,
     observableProto = observable.prototype,
     observableCreate = observable.create,
     disposableCreate = Rx.Disposable.create,
@@ -17,23 +49,6 @@
   function isFunction (fn) {
     return toString.call(fn) === '[object Function]';
   }
-;(function (root, factory) {
-  var freeExports = typeof exports == 'object' && exports &&
-  (typeof root == 'object' && root && root == root.global && (window = root), exports);
-
-  // Because of build optimizers
-  if (typeof define === 'function' && define.amd) {
-    define(['rx', 'angular', 'exports'], function (Rx, angular, exports) {
-      root.Rx = factory(root, exports, Rx, jQuery);
-      return root.Rx;
-    });
-  } else if (typeof module == 'object' && module && module.exports == freeExports) {
-    module.exports = factory(root, module.exports, require('rx'), require('angular'));
-  } else {
-    root.Rx = factory(root, {}, root.Rx, angular);
-  }
-}(this, function (global, exp, Rx, angular, undefined) {
-
   /**
    * @ngdoc overview
    * @name rx
