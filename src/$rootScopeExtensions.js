@@ -163,6 +163,36 @@
                      * Enumerable flag.
                      */
                     enumerable: false
+                },
+                'digestObservables': {
+                    /**
+                     * @ngdoc function
+                     * @name rx.$rootScope.digestObservables#value
+                     *
+                     * @description
+                     * Digests the specified observables when they produce new values.
+                     * The scope variable specified by the observable's key
+                     *   is set to the new value.
+                     *
+                     * @param {object} obj A map where keys are scope properties
+                     *   and values are observables.
+                     *
+                     * @return {boolean} Reference to obj.
+                     */
+                    value: function(observables) {
+                        var scope = this;
+                        return angular.forEach(observables, function(observable, key) {
+                            return observable.digest(scope, key);
+                        });
+                    },
+                    /**
+                     * @ngdoc property
+                     * @name rx.$rootScope.digestObservables#enumerable
+                     *
+                     * @description
+                     * Enumerable flag.
+                     */
+                    enumerable: false
                 }
             });
 
