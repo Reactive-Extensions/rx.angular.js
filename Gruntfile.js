@@ -22,15 +22,17 @@ module.exports = function (grunt) {
     concat: {
       basic: {
         src: [
-            'src/license.js',
-            'src/intro.js',
-            'src/module.js',
-            'src/factory.js',
-            'src/observeonscope.js',
-            'src/safeApply.js',
-            'src/$rootScopeExtensions.js',
-            'src/observableRuntimeExtensions.js',
-            'src/outro.js'
+          'src/license.js',
+          'src/basicheader.js',
+          'src/intro.js',
+          'src/module.js',
+          'src/factory.js',
+          'src/observeonscope.js',
+          'src/safeApply.js',
+          'src/$rootScopeExtensions.js',
+          'src/observableRuntimeExtensions.js',
+          'src/scopescheduler.js',
+          'src/outro.js'
         ],
         dest: 'rx.angular.js'
       }         
@@ -54,25 +56,25 @@ module.exports = function (grunt) {
 
     //invoke nuget.exe
     grunt.util.spawn({
-        cmd: ".nuget/nuget.exe",
-        args: [
-          //specify the .nuspec file
-          "pack",
-          "nuget/RxJS-Bridges-Angular/RxJS-Bridges-Angular.nuspec",
+      cmd: ".nuget/nuget.exe",
+      args: [
+        //specify the .nuspec file
+        "pack",
+        "nuget/RxJS-Bridges-Angular/RxJS-Bridges-Angular.nuspec",
 
-          //specify where we want the package to be created
-          "-OutputDirectory",
-          "nuget",
+        //specify where we want the package to be created
+        "-OutputDirectory",
+        "nuget",
 
-          //override the version with whatever is currently defined in package.json
-          "-Version",
-          grunt.config.get("pkg").version
-        ]
+        //override the version with whatever is currently defined in package.json
+        "-Version",
+        grunt.config.get("pkg").version
+      ]
     }, function (error, result) {
       if (error) {
-          grunt.log.error(error);
+        grunt.log.error(error);
       } else {
-          grunt.log.write(result);
+        grunt.log.write(result);
       }
 
       done();

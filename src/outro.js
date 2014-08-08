@@ -1,1 +1,2 @@
-}.call(this));
+  return Rx;
+}));
