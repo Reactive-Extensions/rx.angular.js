@@ -81,9 +81,7 @@
    * Factory service that exposes the global `Rx` object to the Angular world.
    */
   rxModule.factory('rx', function($window) {
-    if(!$window.Rx) {
-      throw new Error("Rx is not defined!");
-    }
+    $window.Rx = Rx;
     return $window.Rx;
   });
 
