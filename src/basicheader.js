@@ -4,6 +4,7 @@
     disposableCreate = Rx.Disposable.create,
     SingleAssignmentDisposable = Rx.SingleAssignmentDisposable,
     CompositeDisposable = Rx.CompositeDisposable,
+    AnonymousObservable = Rx.AnonymousObservable,
     Scheduler = Rx.Scheduler,
     noop = Rx.helpers.noop;
 
