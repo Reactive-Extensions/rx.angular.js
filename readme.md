@@ -86,6 +86,11 @@ And the HTML markup you can simply just use a ng-click directive much as you hav
 ```
 This only scratches the surface of what is possible when you combine the two libraries together.
 
+## Community Examples ##
+
+There are a growing number of community samples using RxJS and Angular.js, including:
+- [ninya.io](http://www.ninya.io/) - [Code](https://github.com/ninya-io/ninya.io)
+
 ## Dive In! ##
 
 You can find the documentation [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/docs) as well as examples [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples) and plenty of [unit tests](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/tests).
