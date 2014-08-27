@@ -20,7 +20,7 @@
           observer.onCompleted.bind(observer)
         ));
 
-        $scope.on('$destroy', function () {
+        $scope.$on('$destroy', function () {
           !m.isDisposed && m.dispose();
         });
 
