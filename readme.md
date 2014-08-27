@@ -12,79 +12,78 @@ With this library, you will be able to do such things as easily watch values as 
 
 ```js
 angular.module('example', ['rx'])
-    .controller('AppCtrl', function($scope, observeOnScope) {
+  .controller('AppCtrl', function($scope, observeOnScope) {
 
-        // Listen for changes on the name
-        observeOnScope($scope, 'name').subscribe(function(change) {
-            $scope.observedChange = change;
-            $scope.newValue = change.newValue;
-            $scope.oldValue = change.oldValue;
-        });
+    // Listen for changes on the name
+    observeOnScope($scope, 'name').subscribe(function(change) {
+      $scope.observedChange = change;
+      $scope.newValue = change.newValue;
+      $scope.oldValue = change.oldValue;
     });
+  });
 ```
 
 And with your HTML markup you can use it like this:
-
-    <div class="container" ng-app="example" ng-controller="AppCtrl">
-      <h2>Reactive Angular</h2>
-      <ul class="list-unstyled">
-        <li>observedChange {{observedChange}}</li>
-        <li>newValue: {{newValue}</li>
-        <li>oldValue: {{oldValue}}</li>
-      </ul>  
-      
-      <input type="text" ng-model="name" />
-    </div>
-
+```html
+<div class="container" ng-app="example" ng-controller="AppCtrl">
+  <h2>Reactive Angular</h2>
+  <ul class="list-unstyled">
+    <li>observedChange {{observedChange}}</li>
+    <li>newValue: {{newValue}</li>
+    <li>oldValue: {{oldValue}}</li>
+  </ul>  
+  
+  <input type="text" ng-model="name" />
+</div>
+```
 Another example is where we can create an Observable sequence from such things ng-click expressions where we can search Wikipedia:
 
 ```js
 angular.module('example', ['rx'])
-    .controller('AppCtrl', function($scope, $http, rx) {
+  .controller('AppCtrl', function($scope, $http, rx) {
 
-        function searchWikipedia (term) {
-            var deferred = $http({
-                    url: "http://en.wikipedia.org/w/api.php?&callback=JSON_CALLBACK",
-                    method: "jsonp",
-                    params: {
-                        action: "opensearch",
-                        search: term,
-                        format: "json"
-                    }
-                });
+    function searchWikipedia (term) {
+      return rx.Observable
+        .fromPromise($http({
+          url: "http://en.wikipedia.org/w/api.php?&callback=JSON_CALLBACK",
+          method: "jsonp",
+          params: {
+            action: "opensearch",
+            search: term,
+            format: "json"
+          }
+        }))
+        .map(function(response){ return response.data[1]; });             
+    }
 
-            return rx.Observable
-                .fromPromise(deferred)
-                .map(function(response){ return response.data[1]; });                
-        }
+    $scope.search = '';
+    $scope.results = [];
 
-        $scope.search = '';
-        $scope.results = [];
-
-        /*
-            Creates a "click" function which is an observable sequence instead of just a function.
-        */
-        $scope.$createObservableFunction('click')
-            .map(function () { return $scope.search; })
-            .flatMapLatest(searchWikipedia)
-            .subscribe(function(results) {
-                $scope.results = results;
-            });
-    });
+    /*
+      Creates a "click" function which is an observable sequence instead of just a function.
+    */
+    $scope.$createObservableFunction('click')
+      .map(function () { return $scope.search; })
+      .flatMapLatest(searchWikipedia)
+      .subscribe(function(results) {
+        $scope.results = results;
+      });
+  });
 ```
 
 And the HTML markup you can simply just use a ng-click directive much as you have before, but now it is an Observable sequence.
+```html
+<div class="container" ng-app="example" ng-controller="AppCtrl">
 
-    <div class="container" ng-app="example" ng-controller="AppCtrl">
+  <input type="text" ng-model="search">
+  <button ng-click="click()">Search</button>
 
-        <input type="text" ng-model="search">
-        <button ng-click="click()">Search</button>
+  <ul>
+    <li ng-repeat="result in results">{{result}}</li>
+  </ul>
 
-        <ul>
-            <li ng-repeat="result in results">{{result}}</li>
-        </ul>
-    </div>
-
+</div>
+```
 This only scratches the surface of what is possible when you combine the two libraries together.
 
 ## Dive In! ##
@@ -96,27 +95,27 @@ You can find the documentation [here](https://github.com/Reactive-Extensions/rx.
 There are a number of ways to get started with RxJS. 
 
 ### Download the Source
-
-    git clone https://github.com/Reactive-Extensions/rx.angular.js.git
-    cd ./rx.angular.js
-
+```bash
+$ git clone https://github.com/Reactive-Extensions/rx.angular.js.git
+$ cd ./rx.angular.js
+```
 ### Installing with [NPM](https://npmjs.org/)
-
-    npm install rx-angular
-    npm install -g rx-angular
-
+```bash
+npm install rx-angular
+npm install -g rx-angular
+```
 ### Installing with [Bower](http://bower.io/)
-
-    bower install angular-rx
-
+```bash
+bower install angular-rx
+```
 ### Installing with [Jam](http://jamjs.org/)
-    
-    jam install rx-angular
-
+```bash
+jam install rx-angular
+```
 ### Installing All of RxJS via [NuGet](http://nuget.org/)
-
-    Install-Package RxJS-Bridges-Angular
-
+```PowerShell
+PM> Install-Package RxJS-Bridges-Angular
+```
 ## Contributing ##
 
 There are lots of ways to [contribute](https://github.com/Reactive-Extensions/rx.angular.js/wiki/Contributions) to the project, and we appreciate our [contributors](https://github.com/Reactive-Extensions/rx.angular.js/wiki/Contributors).
