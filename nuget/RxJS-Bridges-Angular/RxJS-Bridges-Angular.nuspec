@@ -22,7 +22,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\rx.angular.js" target="content\Scripts\rx.angular.js" />
-    <file src="..\..\rx.angular.min.js" target="content\Scripts\rx.angular.min.js" />
+    <file src="..\..\dist\rx.angular.js" target="content\Scripts\rx.angular.js" />
+    <file src="..\..\dist\rx.angular.min.js" target="content\Scripts\rx.angular.min.js" />
   </files>
 </package>

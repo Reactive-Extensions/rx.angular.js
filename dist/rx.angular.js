@@ -23,7 +23,7 @@
   // Because of build optimizers
   if (typeof define === 'function' && define.amd) {
     define(['rx', 'angular', 'exports'], function (Rx, angular, exports) {
-      root.Rx = factory(root, exports, Rx, jQuery);
+      root.Rx = factory(root, exports, Rx, angular);
       return root.Rx;
     });
   } else if (typeof module == 'object' && module && module.exports == freeExports) {
@@ -39,6 +39,7 @@
     disposableCreate = Rx.Disposable.create,
     SingleAssignmentDisposable = Rx.SingleAssignmentDisposable,
     CompositeDisposable = Rx.CompositeDisposable,
+    AnonymousObservable = Rx.AnonymousObservable,
     Scheduler = Rx.Scheduler,
     noop = Rx.helpers.noop;
 
@@ -46,9 +47,6 @@
   var toString = Object.prototype.toString,
     slice = Array.prototype.slice;
 
-  function isFunction (fn) {
-    return toString.call(fn) === '[object Function]';
-  }
   /**
    * @ngdoc overview
    * @name rx
@@ -118,7 +116,7 @@
 
   observableProto.safeApply = function($scope, fn){
 
-    fn = isFunction(fn) ? fn : noop;
+    fn = angular.isFunction(fn) ? fn : noop;
 
     return this.doAction(function(data){
       ($scope.$$phase || $scope.$root.$$phase) ? fn(data) : $scope.$apply(function(){
@@ -344,7 +342,7 @@
           observer.onCompleted.bind(observer)
         ));
 
-        $scope.on('$destroy', function () {
+        $scope.$on('$destroy', function () {
           !m.isDisposed && m.dispose();
         });
 
@@ -352,6 +350,7 @@
       });
     };
   }]);
+
   var now = Date.now || (+new Date());
 
   var ScopeScheduler = Rx.ScopeScheduler = (function () {

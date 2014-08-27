@@ -34,13 +34,13 @@ module.exports = function (grunt) {
           'src/scopescheduler.js',
           'src/outro.js'
         ],
-        dest: 'rx.angular.js'
+        dest: 'dist/rx.angular.js'
       }         
     },
     uglify: {
       basic: {
-        src: ['<banner>', 'rx.angular.js'],
-        dest: 'rx.angular.min.js'
+        src: ['<banner>', 'dist/rx.angular.js'],
+        dest: 'dist/rx.angular.min.js'
       }
     },
     qunit: {

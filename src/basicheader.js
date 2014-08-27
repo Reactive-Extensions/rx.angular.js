@@ -11,7 +11,3 @@
   // Utilities
   var toString = Object.prototype.toString,
     slice = Array.prototype.slice;
-
-  function isFunction (fn) {
-    return toString.call(fn) === '[object Function]';
-  }
