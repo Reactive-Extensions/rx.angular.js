@@ -2,7 +2,7 @@
   "name": "rx-angular",
   "title": "The Reactive Extensions Bindings for the AngularJS.",
   "description": "Library for bridging between RxJS and AngularJS.",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "homepage": "https://github.com/Reactive-Extensions/rx.angular.js",
   "author": {
     "name": "MS Open Tech"
@@ -40,7 +40,7 @@
     "AngularJS",
     "Angular"
   ],
-  "main": "rx.angular.js",
+  "main": "index.js",
   "scripts": {
     "test": "grunt"
   }
