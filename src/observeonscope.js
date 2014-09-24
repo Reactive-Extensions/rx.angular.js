@@ -15,7 +15,7 @@
 *
 * @return {function} Factory function that creates obersables.
 */
-  rxModule.factory('observeOnScope', function(rx) {
+  rxModule.factory('observeOnScope', ['rx', function(rx) {
     return function(scope, watchExpression, objectEquality) {
       return rx.Observable.create(function (observer) {
         // Create function to handle old and new Value
@@ -27,4 +27,4 @@
         return scope.$watch(watchExpression, listener, objectEquality);
       });
     };
-  });
+  }]);

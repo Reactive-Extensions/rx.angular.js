@@ -78,10 +78,10 @@
    * @description
    * Factory service that exposes the global `Rx` object to the Angular world.
    */
-  rxModule.factory('rx', function($window) {
+  rxModule.factory('rx', ['$window', function($window) {
     $window.Rx || ($window.Rx = Rx);
     return $window.Rx;
-  });
+  }]);
 
 /**
 * @ngdoc service
@@ -100,7 +100,7 @@
 *
 * @return {function} Factory function that creates obersables.
 */
-  rxModule.factory('observeOnScope', function(rx) {
+  rxModule.factory('observeOnScope', ['rx', function(rx) {
     return function(scope, watchExpression, objectEquality) {
       return rx.Observable.create(function (observer) {
         // Create function to handle old and new Value
@@ -112,7 +112,7 @@
         return scope.$watch(watchExpression, listener, objectEquality);
       });
     };
-  });
+  }]);
 
   observableProto.safeApply = function($scope, fn){
 
