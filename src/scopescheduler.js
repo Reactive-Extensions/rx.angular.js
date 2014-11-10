@@ -1,6 +1,6 @@
-  var now = Date.now || (+new Date());
-
   var ScopeScheduler = Rx.ScopeScheduler = (function () {
+
+    var now = Date.now || (+new Date());
 
     function scheduleNow(state, action) {
       var scheduler = this,
@@ -36,7 +36,7 @@
 
       (scheduler._scope.$$phase || scheduler._scope.$root.$$phase)
         ? fn()
-        : scheduler._scope.$apply(function () { fn(); });
+        : scheduler._scope.$apply(fn);
     }
 
     function scheduleAbsolute(state, dueTime, action) {

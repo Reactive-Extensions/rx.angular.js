@@ -11,18 +11,15 @@
           function (e) {
             if (!$scope.$$phase) {
               $scope.$apply(propSetter($scope, e));
-            }
-            else {
+            } else {
               propSetter($scope, e);
-            }       
+            }
           },
           observer.onError.bind(observer),
           observer.onCompleted.bind(observer)
         ));
 
-        $scope.$on('$destroy', function () {
-          !m.isDisposed && m.dispose();
-        });
+        $scope.$on('$destroy', m.dispose.bind(m));
 
         return m;
       });

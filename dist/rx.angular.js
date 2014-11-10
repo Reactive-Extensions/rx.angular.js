@@ -78,29 +78,29 @@
    * @description
    * Factory service that exposes the global `Rx` object to the Angular world.
    */
-  rxModule.factory('rx', function($window) {
+  rxModule.factory('rx', ['$window', function($window) {
     $window.Rx || ($window.Rx = Rx);
     return $window.Rx;
-  });
+  }]);
 
-/**
-* @ngdoc service
-* @name rx.observeOnSope
-*
-* @requires rx.rx
-*
-* @description
-* An observer function that returns a function for a given `scope`,
-* `watchExpression` and `objectEquality` object. The returned function
-* delegates to an Angular watcher.
-*
-* @param {object} scope Scope object.
-* @param {(string|object)} watchExpression Watch expression.
-* @param {boolean} objectEquality Object to compare for object equality.
-*
-* @return {function} Factory function that creates obersables.
-*/
-  rxModule.factory('observeOnScope', function(rx) {
+  /**
+  * @ngdoc service
+  * @name rx.observeOnSope
+  *
+  * @requires rx.rx
+  *
+  * @description
+  * An observer function that returns a function for a given `scope`,
+  * `watchExpression` and `objectEquality` object. The returned function
+  * delegates to an Angular watcher.
+  *
+  * @param {object} scope Scope object.
+  * @param {(string|object)} watchExpression Watch expression.
+  * @param {boolean} objectEquality Object to compare for object equality.
+  *
+  * @return {function} Factory function that creates obersables.
+  */
+  rxModule.factory('observeOnScope', ['rx', function(rx) {
     return function(scope, watchExpression, objectEquality) {
       return rx.Observable.create(function (observer) {
         // Create function to handle old and new Value
@@ -112,18 +112,19 @@
         return scope.$watch(watchExpression, listener, objectEquality);
       });
     };
-  });
+  }]);
 
   observableProto.safeApply = function($scope, fn){
 
     fn = angular.isFunction(fn) ? fn : noop;
 
-    return this.doAction(function(data){
-      ($scope.$$phase || $scope.$root.$$phase) ? fn(data) : $scope.$apply(function(){
+    return this['do'](function (data) {
+      ($scope.$$phase || $scope.$root.$$phase) ? fn(data) : $scope.$apply(function () {
         fn(data);
       });
     });
   };
+
   rxModule.config(['$provide', function($provide) {
     /**
      * @ngdoc service
@@ -152,7 +153,7 @@
            * @name rx.$rootScope.$toObservable#value
            *
            * @description
-           * Creates an observable from a watchExpression. 
+           * Creates an observable from a watchExpression.
            *
            * @param {(function|string)} watchExpression A watch expression.
            * @param {boolean} objectEquality Compare object for equality.
@@ -171,11 +172,11 @@
               var disposable = Rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
 
               scope.$on('$destroy', function(){
-                disposable.isDisposed || disposable.dispose();
+                disposable.dispose();
               });
 
               return disposable;
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -184,7 +185,8 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true
         },
         /**
          * @ngdoc property
@@ -224,7 +226,7 @@
               });
 
               return disposable;
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -233,7 +235,8 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true
         },
         /**
          * @ngdoc property
@@ -273,7 +276,7 @@
                 // Remove our listener function from the scope.
                 delete scope[functionName];
               };
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -282,7 +285,8 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true
         },
         /**
          * @ngdoc function
@@ -297,13 +301,13 @@
          *   and values are observables.
          *
          * @return {boolean} Reference to obj.
-         */        
+         */
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
             return angular.map(observables, function(observable, key) {
               return observable.digest(scope, key);
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -312,7 +316,8 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true
         }
       });
 
@@ -333,27 +338,24 @@
           function (e) {
             if (!$scope.$$phase) {
               $scope.$apply(propSetter($scope, e));
-            }
-            else {
+            } else {
               propSetter($scope, e);
-            }       
+            }
           },
           observer.onError.bind(observer),
           observer.onCompleted.bind(observer)
         ));
 
-        $scope.$on('$destroy', function () {
-          !m.isDisposed && m.dispose();
-        });
+        $scope.$on('$destroy', m.dispose.bind(m));
 
         return m;
       });
     };
   }]);
 
-  var now = Date.now || (+new Date());
-
   var ScopeScheduler = Rx.ScopeScheduler = (function () {
+
+    var now = Date.now || (+new Date());
 
     function scheduleNow(state, action) {
       var scheduler = this,
@@ -389,7 +391,7 @@
 
       (scheduler._scope.$$phase || scheduler._scope.$root.$$phase)
         ? fn()
-        : scheduler._scope.$apply(function () { fn(); });
+        : scheduler._scope.$apply(fn);
     }
 
     function scheduleAbsolute(state, dueTime, action) {
@@ -402,5 +404,6 @@
       return scheduler;
     }
   }());
+
   return Rx;
 }));

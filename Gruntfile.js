@@ -35,12 +35,19 @@ module.exports = function (grunt) {
           'src/outro.js'
         ],
         dest: 'dist/rx.angular.js'
-      }         
+      }
     },
     uglify: {
+      options: {
+        banner:
+          '/* Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.*/'
+      },
       basic: {
-        src: ['<banner>', 'dist/rx.angular.js'],
-        dest: 'dist/rx.angular.min.js'
+        options: {
+          sourceMap: true,
+          sourceMapName: 'dist/rx.angular.map'
+        },
+        files: {'dist/rx.angular.min.js': ['dist/rx.angular.js'] }
       }
     },
     qunit: {
@@ -78,7 +85,7 @@ module.exports = function (grunt) {
       }
 
       done();
-    });     
+    });
   });
 
   // Default task(s).

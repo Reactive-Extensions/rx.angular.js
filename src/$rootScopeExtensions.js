@@ -26,7 +26,7 @@
            * @name rx.$rootScope.$toObservable#value
            *
            * @description
-           * Creates an observable from a watchExpression. 
+           * Creates an observable from a watchExpression.
            *
            * @param {(function|string)} watchExpression A watch expression.
            * @param {boolean} objectEquality Compare object for equality.
@@ -45,11 +45,11 @@
               var disposable = Rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
 
               scope.$on('$destroy', function(){
-                disposable.isDisposed || disposable.dispose();
+                disposable.dispose();
               });
 
               return disposable;
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -58,7 +58,9 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true,
+          writable: true
         },
         /**
          * @ngdoc property
@@ -98,7 +100,7 @@
               });
 
               return disposable;
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -107,7 +109,9 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true,
+          writable: true
         },
         /**
          * @ngdoc property
@@ -147,7 +151,7 @@
                 // Remove our listener function from the scope.
                 delete scope[functionName];
               };
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -156,7 +160,9 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true,
+          writable: true
         },
         /**
          * @ngdoc function
@@ -171,13 +177,13 @@
          *   and values are observables.
          *
          * @return {boolean} Reference to obj.
-         */        
+         */
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
             return angular.map(observables, function(observable, key) {
               return observable.digest(scope, key);
-            });
+            }).publish().refCount();
           },
           /**
            * @ngdoc property
@@ -186,7 +192,9 @@
            * @description
            * Enumerable flag.
            */
-          enumerable: false
+          enumerable: false,
+          configurable: true,
+          writable: true
         }
       });
 

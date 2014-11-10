@@ -4,161 +4,158 @@ module('$rootScopeExtension');
 //of a $watch was called.
 //So what we do is, we redefine the $watch method so that we can
 //intercept the unbind function to know if it was called or not.
-var createScopeTestHelper = function(scope){
-    var _$watch = scope.$watch;
+var createScopeTestHelper = function(scope) {
+  var _$watch = scope.$watch;
 
-    var calledUnbind = false;
+  var calledUnbind = false;
 
-    scope.$watch = function(expression, objectEquality){
-        var unbind = _$watch.call(scope, expression, objectEquality);
+  scope.$watch = function (expression, objectEquality) {
+    var unbind = _$watch.call(scope, expression, objectEquality);
 
-        return function(){
-            unbind();
-            calledUnbind = true;
-        };
+    return function () {
+      unbind();
+      calledUnbind = true;
     };
+  };
 
-    return {
-        calledUnbind: function(){
-            return calledUnbind;
-        }
+  return {
+    calledUnbind: function () {
+      return calledUnbind;
     }
+  };
 };
 
 test('can subscribe', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    scope.testProperty = 0;
+  scope.testProperty = 0;
 
-    var calledSubscribe = false;
+  var calledSubscribe = false;
 
-    scope
-        .$toObservable('testProperty')
-        .subscribe(function(val){
-            calledSubscribe = true;
-        });
-
-    scope.$apply(function(){
-        scope.testProperty = 1;
+  scope
+    .$toObservable('testProperty')
+    .subscribe(function(val){
+        calledSubscribe = true;
     });
 
-    ok(calledSubscribe);
+  scope.$apply(function(){
+    scope.testProperty = 1;
+  });
+
+  ok(calledSubscribe);
 });
 
 test('dispose calls unbind function which was returned from $watch', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    var scopeTestHelper = createScopeTestHelper(scope);
+  var scopeTestHelper = createScopeTestHelper(scope);
 
-    scope.testProperty = 0;
+  scope.testProperty = 0;
 
-    var called = 0;
+  var called = 0;
 
-    var disposable = scope
-                        .$toObservable('testProperty')
-                        .subscribe(function(val){
-                            called++;
-                        });
-
-    scope.$apply(function(){
-        scope.testProperty = 1;
+  var disposable = scope
+    .$toObservable('testProperty')
+    .subscribe(function(val){
+        called++;
     });
 
-    ok(called === 1);
+  scope.$apply(function(){
+      scope.testProperty = 1;
+  });
 
-    disposable.dispose();
+  ok(called === 1);
 
-    scope.$apply(function(){
-        scope.testProperty = 2;
-    });
+  disposable.dispose();
 
-    ok(scopeTestHelper.calledUnbind(), 'called the unbind function');
-    ok(called === 1, 'subscribe callback was only called once');
+  scope.$apply(function(){
+      scope.testProperty = 2;
+  });
+
+  ok(scopeTestHelper.calledUnbind(), 'called the unbind function');
+  ok(called === 1, 'subscribe callback was only called once');
 });
 
 test('dispose calls unbind function which was returned from $watch', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    var scopeTestHelper = createScopeTestHelper(scope);
+  var scopeTestHelper = createScopeTestHelper(scope);
 
-    scope.testProperty = 0;
+  scope.testProperty = 0;
 
-    var called = 0;
+  var called = 0;
 
-    var disposable = scope
-                        .$toObservable('testProperty')
-                        .subscribe(function(val){
-                            called++;
-                        });
+  var disposable = scope
+    .$toObservable('testProperty')
+    .subscribe(function(val){
+        called++;
+    });
 
-    scope.$destroy();
+  scope.$destroy();
 
-    ok(scopeTestHelper.calledUnbind(), 'called the unbind function');
-    ok(disposable.m.current.isDisposed,'called dispose on the disposable');
+  ok(scopeTestHelper.calledUnbind(), 'called the unbind function');
 });
 
 
 test('can add observable function to scope', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    var calledSubscribe = false,
-        calledWith;
+  var calledSubscribe = false,
+      calledWith;
 
-    scope
-        .$createObservableFunction('clickMe')
-        .subscribe(function(val){
-            calledSubscribe = true;
-            calledWith = val;
-        });
-
-    scope.$apply(function(){
-        scope.clickMe('test');
+  scope
+    .$createObservableFunction('clickMe')
+    .subscribe(function(val){
+      calledSubscribe = true;
+      calledWith = val;
     });
 
-    ok(calledSubscribe);
-    ok(calledWith === 'test',
-       'created function was not called with correct parameters');
+  scope.$apply(function(){
+    scope.clickMe('test');
+  });
+
+  ok(calledSubscribe);
+  ok(calledWith === 'test', 'created function was not called with correct parameters');
 });
 
 test('observable function removed from scope when disposed', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    var subscription = scope
-        .$createObservableFunction('clickMe')
-        .subscribe(function(val){});
+  var subscription = scope
+      .$createObservableFunction('clickMe')
+      .subscribe(function(val){});
 
-    subscription.dispose();
+  subscription.dispose();
 
-    ok(scope.clickMe === undefined);
+  ok(scope.clickMe === undefined);
 });
 
 test('can subscribe to event observable', function () {
-    var injector = angular.injector(['ng', 'rx']);
+  var injector = angular.injector(['ng', 'rx']);
 
-    var scope = injector.get('$rootScope').$new();
+  var scope = injector.get('$rootScope').$new();
 
-    var EVENT_NAME  = 'somethingHappened',
-        PARAM1      = 'param1',
-        PARAM2      = 'param2';
+  var EVENT_NAME  = 'somethingHappened',
+      PARAM1      = 'param1',
+      PARAM2      = 'param2';
 
-    scope
-        .$eventToObservable(EVENT_NAME)
-        .subscribe(function(data){
-            ok(data.event.name === EVENT_NAME);
-            ok(data.additionalArguments[0] === PARAM1);
-            ok(data.additionalArguments[1] === PARAM2);
-        });
+  scope
+    .$eventToObservable(EVENT_NAME)
+    .subscribe(function(data){
+        ok(data.event.name === EVENT_NAME);
+        ok(data.additionalArguments[0] === PARAM1);
+        ok(data.additionalArguments[1] === PARAM2);
+    });
 
-    scope.$emit(EVENT_NAME, PARAM1, PARAM2);
+  scope.$emit(EVENT_NAME, PARAM1, PARAM2);
 });
-
