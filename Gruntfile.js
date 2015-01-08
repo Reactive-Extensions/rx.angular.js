@@ -32,6 +32,7 @@ module.exports = function (grunt) {
           'src/$rootScopeExtensions.js',
           'src/observableRuntimeExtensions.js',
           'src/scopescheduler.js',
+          'src/manageScope.js',
           'src/outro.js'
         ],
         dest: 'dist/rx.angular.js'
