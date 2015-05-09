@@ -1,4 +1,4 @@
-  rxModule.config(['$provide', function($provide) {
+  rxModule.config(function($provide) {
     /**
      * @ngdoc service
      * @name rx.$rootScope
@@ -10,58 +10,154 @@
      * with additional methods. These methods are Rx related methods, such as
      * methods to create observables or observable functions.
      */
-    $provide.decorator('$rootScope', ['$delegate', function($delegate) {
+    $provide.decorator('$rootScope', function($delegate, rx) {
 
       Object.defineProperties($delegate.constructor.prototype, {
         /**
-         * @ngdoc property
-         * @name rx.$rootScope.$toObservable
-         *
-         * @description
-         * Provides a method to create observable methods.
-         */
-        '$toObservable': {
-          /**
-           * @ngdoc function
-           * @name rx.$rootScope.$toObservable#value
+           * @ngdoc property
+           * @name rx.$rootScope.$toObservable
            *
            * @description
-           * Creates an observable from a watchExpression.
-           *
-           * @param {(function|string)} watchExpression A watch expression.
-           * @param {boolean} objectEquality Compare object for equality.
-           *
-           * @return {object} Observable.
+           * Provides a method to create observable methods.
            */
-          value: function(watchExpression, objectEquality) {
-            var scope = this;
-            return observableCreate(function (observer) {
-              // Create function to handle old and new Value
-              function listener (newValue, oldValue) {
-                observer.onNext({ oldValue: oldValue, newValue: newValue });
-              }
+          '$toObservable': {
+              /**
+               * @ngdoc function
+               * @name rx.$rootScope.$toObservable#value
+               *
+               * @description
+               * Creates an observable from a watchExpression.
+               *
+               * @param {(function|string)} watchExpression A watch expression.
+               * @param {boolean} objectEquality Compare object for equality.
+               *
+               * @return {object} Observable.
+               */
+              value: function(watchExpression, objectEquality) {
+                  var scope = this;
+                  return observableCreate(function (observer) {
+                      // Create function to handle old and new Value
+                      function listener (newValue, oldValue) {
+                          observer.onNext({ oldValue: oldValue, newValue: newValue });
+                      }
 
-              // Returns function which disconnects the $watch expression
-              var disposable = Rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
+                      // Returns function which disconnects the $watch expression
+                      var disposable = Rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
 
-              scope.$on('$destroy', function(){
-                disposable.dispose();
-              });
+                      scope.$on('$destroy', function(){
+                          disposable.dispose();
+                      });
 
-              return disposable;
-            }).publish().refCount();
+                      return disposable;
+                  }).publish().refCount();
+              },
+              /**
+               * @ngdoc property
+               * @name rx.$rootScope.$toObservable#enumerable
+               *
+               * @description
+               * Enumerable flag.
+               */
+              enumerable: false,
+              configurable: true,
+              writable: true
           },
           /**
            * @ngdoc property
-           * @name rx.$rootScope.$toObservable#enumerable
+           * @name rx.$rootScope.$toObservableCollection
            *
            * @description
-           * Enumerable flag.
+           * Provides a method to create observable methods.
            */
-          enumerable: false,
-          configurable: true,
-          writable: true
-        },
+          '$toObservableCollection': {
+              /**
+               * @ngdoc function
+               * @name rx.$rootScope.$toObservableCollection#value
+               *
+               * @description
+               * Creates an observable from a watchExpression.
+               *
+               * @param {(function|string)} watchExpression A watch expression.
+               *
+               * @return {object} Observable.
+               */
+              value: function(watchExpression) {
+                  var scope = this;
+                  return observableCreate(function (observer) {
+                      // Create function to handle old and new Value
+                      function listener (newValue, oldValue) {
+                          observer.onNext({ oldValue: oldValue, newValue: newValue });
+                      }
+
+                      // Returns function which disconnects the $watch expression
+                      var disposable = Rx.Disposable.create(scope.$watchCollection(watchExpression, listener));
+
+                      scope.$on('$destroy', function(){
+                          disposable.dispose();
+                      });
+
+                      return disposable;
+                  }).publish().refCount();
+              },
+              /**
+               * @ngdoc property
+               * @name rx.$rootScope.$toObservableCollection#enumerable
+               *
+               * @description
+               * Enumerable flag.
+               */
+              enumerable: false,
+              configurable: true,
+              writable: true
+          },
+          /**
+           * @ngdoc property
+           * @name rx.$rootScope.$toObservableGroup
+           *
+           * @description
+           * Provides a method to create observable methods.
+           */
+          '$toObservableGroup': {
+              /**
+               * @ngdoc function
+               * @name rx.$rootScope.$toObservableGroup#value
+               *
+               * @description
+               * Creates an observable from a watchExpressions.
+               *
+               * @param {(function|string)} watchExpressions A watch expression.
+               *
+               * @return {object} Observable.
+               */
+              value: function(watchExpressions) {
+                  var scope = this;
+                  return observableCreate(function (observer) {
+                      // Create function to handle old and new Value
+                      function listener (newValue, oldValue) {
+                          observer.onNext({ oldValue: oldValue, newValue: newValue });
+                      }
+
+                      // Returns function which disconnects the $watch expression
+                      var disposable = Rx.Disposable.create(scope.$watchGroup(watchExpressions, listener));
+
+                      scope.$on('$destroy', function(){
+                          disposable.dispose();
+                      });
+
+                      return disposable;
+                  }).publish().refCount();
+              },
+              /**
+               * @ngdoc property
+               * @name rx.$rootScope.$toObservableGroup#enumerable
+               *
+               * @description
+               * Enumerable flag.
+               */
+              enumerable: false,
+              configurable: true,
+              writable: true
+          },
         /**
          * @ngdoc property
          * @name rx.$rootScope.$eventToObservable
@@ -134,24 +230,7 @@
            * @return {function} Remove listener function.
            */
           value: function(functionName, listener) {
-            var scope = this;
-
-            return observableCreate(function (observer) {
-              scope[functionName] = function () {
-                if (listener) {
-                  observer.onNext(listener.apply(this, arguments));
-                } else if (arguments.length === 1) {
-                  observer.onNext(arguments[0]);
-                } else {
-                  observer.onNext(arguments);
-                }
-              };
-
-              return function () {
-                // Remove our listener function from the scope.
-                delete scope[functionName];
-              };
-            }).publish().refCount();
+              return rx.createObservableFunction(this, functionName, listener);
           },
           /**
            * @ngdoc property
@@ -181,7 +260,7 @@
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
-            return angular.map(observables, function(observable, key) {
+            return observables.map(function(observable, key) {
               return observable.digest(scope, key);
             }).publish().refCount();
           },
@@ -199,5 +278,5 @@
       });
 
       return $delegate;
-    }]);
-  }]);
+    });
+  });
