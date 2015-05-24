@@ -1,4 +1,4 @@
-  rxModule.run(['$parse', function($parse) {
+  rxModule.run(function($parse) {
 
     observableProto.digest = function($scope, prop) {
       var source = this;
@@ -24,4 +24,4 @@
         return m;
       });
     };
-  }]);
+  });

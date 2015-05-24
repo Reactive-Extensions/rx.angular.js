@@ -21,12 +21,13 @@
     "rx": "*"
   },
   "devDependencies": {
-    "grunt-cli": "*",
     "grunt": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
+    "grunt-cli": "*",
     "grunt-contrib-concat": "*",
+    "grunt-contrib-jshint": "*",
     "grunt-contrib-qunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-ng-annotate": "^0.10.0",
     "load-grunt-tasks": "*"
   },
   "jam": {

@@ -19,6 +19,20 @@ module.exports = function (grunt) {
         'and limitations under the License..\r\n' +
         '*/'
     },
+    ngAnnotate: {
+        options: {
+            add: true,
+            singleQuotes: true
+        },
+        'rx.angular': {
+            files: [
+                {
+                    expand: true,
+                    src: 'dist/rx.angular.js'
+                }
+            ]
+        }
+    },
     concat: {
       basic: {
         src: [
@@ -58,7 +72,6 @@ module.exports = function (grunt) {
 
   require('load-grunt-tasks')(grunt);
 
-
   grunt.registerTask('nuget', 'Register NuGet-RxJS-Angular', function () {
     var done = this.async();
 
@@ -90,5 +103,5 @@ module.exports = function (grunt) {
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['concat:basic', 'uglify:basic', 'qunit']);
+  grunt.registerTask('default', ['concat:basic', 'ngAnnotate', 'uglify:basic', 'qunit']);
 };
