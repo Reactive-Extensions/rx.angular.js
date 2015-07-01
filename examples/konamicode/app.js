@@ -21,7 +21,7 @@
                         .selectMany(function (x) {
                             return x.sequenceEqual(konamiCode);
                         })
-                        .where(angular.noop)
+                        .where(angular.identity)
                         .subscribe(function () {
                             scope.$apply(scope.konamiCode);
                         });
