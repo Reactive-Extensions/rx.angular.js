@@ -9,7 +9,6 @@
     ".*",
     "*.bat",
     "*.md",
-    "*.min.*",
     "*.txt",
     "*.log",
     "package.json",
