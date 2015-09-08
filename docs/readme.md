@@ -128,6 +128,61 @@ Unit Tests:
 
 * * *
 
+
+### <a id="safeapplyscope-fn"></a>`safeApply(scope, [onNext])`
+<a href="#safeapplyscope-fn">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/safeApply.js "View in source")
+
+Ensures a [`Scope.$digest()`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) is scheduled to be called after the given side-effect function is run. This is equivalent to a [`.do()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/do.md) operator that automatically wraps its function in a [`Scope.$apply()`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$apply) if an apply is not already in progress.
+
+#### Arguments
+1. `scope` *(`$rootScope.Scope`)*: The scope to apply the `onNext` function with.
+2. `[onNext]` *(`Function`)*: Function to invoke for each element in the observable sequence.
+
+#### Returns
+
+*(Observable)*: The source sequence with the side-effecting behavior applied.
+
+#### Example
+```js
+angular.module('rxexamples', ['rx'])
+  .controller('AppCtrl', function($scope, rx) {
+
+    $scope.counter = 0;
+
+    rx.Observable.interval(1000)
+      .safeApply(
+        $scope,
+        function (x) { $scope.counter = x; })
+      .subscribe();
+
+  });
+```
+
+### Location
+
+File:
+- [`/src/safeApply.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/safeApply.js)
+
+Dist:
+- [`rx.angular.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/dist/rx.angular.js)
+
+Prerequisites:
+- [`rx.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/dist/rx.js) | [`rx.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/dist/rx.compat.js) | [`rx.lite.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.js) | [`rx.lite.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.compat.js)
+
+NPM Packages:
+- [`rx-angular`](https://www.npmjs.org/package/rx-angular)
+
+Bower Packages:
+- `angular-rx`
+
+NuGet Packages:
+- [`RxJS-Bridges-Angular`](http://www.nuget.org/packages/RxJS-Bridges-Angular)
+
+Unit Tests:
+- [`/tests/tests.safeApply.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/tests/tests.safeApply.js)
+
+* * *
+
 ### <a id="createobservablefunctionfunctionname-listener"></a>`$createObservableFunction(functionName, listener)`
 <a href="#createobservablefunctionfunctionname-listener">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/$rootScopeExtensions.js)
 
