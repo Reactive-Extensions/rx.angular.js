@@ -22,6 +22,7 @@ Observable Methods:
 
 [`$rootScope`](http://docs.angularjs.org/api/ng.$rootScope) Methods:
 - [`$createObservableFunction`](#createobservablefunctionfunctionname-listener)
+- [`$digestObservables`](#digestobservables)
 - [`$eventToObservable`](#eventtoobservableeventname)
 - ['$toObservable'](#toobservablewatchexpression-objectequality)
 
@@ -265,6 +266,75 @@ angular.module('rxexamples', ['rx'])
     });
 
 // => RxJS
+```
+
+### Location
+
+File:
+- [`/src/$rootScopeExtensions.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/$rootScopeExtensions.js)
+
+Dist:
+- [`rx.angular.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/dist/rx.angular.js)
+
+Prerequisites:
+- [`rx.lite.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.js) | [`rx.lite.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.compat.js)
+
+NPM Packages:
+- [`rx-angular`](https://www.npmjs.org/package/rx-angular)
+
+Bower Packages:
+- `angular-rx`
+
+NuGet Packages:
+- [`RxJS-Bridges-Angular`](http://www.nuget.org/packages/RxJS-Bridges-Angular)
+
+Unit Tests:
+- [`/tests/tests.$rootScopeExtensions.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/tests/$rootScopeExtensions.js)
+
+* * *
+
+### <a id="digestobservables"></a>`$digestObservables(scope, obj)`
+<a href="#digestobservables">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/$rootScopeExtensions.js)
+
+Digests the specified observables when they produce new values. The scope variable / assignable expression  specified by the observable's key is set to the new value.
+
+#### Arguments
+1. `obj`: *(`Object`)*: A map where keys are scope properties (assignable expressions) and values are observables.
+
+#### Returns
+*(`Observable`)*: Observable of change objects.
+
+#### Example
+```js
+angular.module('rxexamples', ['rx'])
+  .controller('AppCtrl', function($scope) {
+    $scope.property1 = null;
+
+    // Assume we're using ng-controller="AppCtrl as ctrl" in the template.
+    this.property2 = null;
+
+    var observables = {
+      property1: Rx.Observable.interval(500)
+        .map(function(val) { return val + 1; }),
+      'ctrl.property2': Rx.Observable.interval(1000)
+        .map(function(val) { return val + 1; })
+    };
+
+    $scope.$digestObservables(observables)
+      .subscribe(function (change) {
+        if (change.observable === observables.property1) {
+          console.log('Next %s: %s, %s', change.expression, $scope.property1, change.value);
+        } else if (change.observable === observables['ctrl.property2']) {
+          console.log('Next %s: %s, %s', change.expression, this.property2, change.value);
+        }
+      }.bind(this));
+
+// => Next property1: 1, 1
+// => Next ctrl.property2: 1, 1
+// => Next property1: 2, 2
+// => Next property1: 3, 3
+// => Next ctrl.property2: 2, 2
+// ...
 ```
 
 ### Location
