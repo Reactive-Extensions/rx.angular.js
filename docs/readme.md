@@ -18,6 +18,7 @@ Factories:
 
 Observable Methods:
 - [`safeApply`](#safeapplyscope-fn)
+- [`digest`](#digestscope-fn)
 
 [`$rootScope`](http://docs.angularjs.org/api/ng.$rootScope) Methods:
 - [`$createObservableFunction`](#createobservablefunctionfunctionname-listener)
@@ -183,13 +184,67 @@ Unit Tests:
 
 * * *
 
+### <a id="digestscope-fn"></a>`digest(scope, prop)`
+<a href="#digestscope-fn">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/observableRuntimeExtensions.js "View in source")
+
+Ensures a [`Scope.$digest()`](https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest) is scheduled to be called after each element in the observable sequence is assigned to the given assignable expression / scope property. This is equivalent to a [`.safeApply()`](#safeapplyscope-fn) call that assigns to a scope or controller property.
+
+#### Arguments
+1. `scope` *(`$rootScope.Scope`)*: A scope to use as the context of the assignable expression.
+2. `prop` *(`String`)*: An assignable expression, e.g. a scope property name.
+
+#### Returns
+
+*(Observable)*: The source sequence with the side-effecting behavior applied.
+
+#### Example
+```js
+angular.module('rxexamples', ['rx'])
+  .controller('AppCtrl', function($scope, rx) {
+
+    $scope.counter = 0;
+
+    rx.Observable.interval(1000)
+      .digest(
+        $scope,
+        'counter'
+      .subscribe();
+
+  });
+```
+
+### Location
+
+File:
+- [`/src/observableRuntimeExtensions.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/observableRuntimeExtensions.js)
+
+Dist:
+- [`rx.angular.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/dist/rx.angular.js)
+
+Prerequisites:
+- [`rx.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/dist/rx.js) | [`rx.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/dist/rx.compat.js) | [`rx.lite.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.js) | [`rx.lite.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.compat.js)
+
+NPM Packages:
+- [`rx-angular`](https://www.npmjs.org/package/rx-angular)
+
+Bower Packages:
+- `angular-rx`
+
+NuGet Packages:
+- [`RxJS-Bridges-Angular`](http://www.nuget.org/packages/RxJS-Bridges-Angular)
+
+Unit Tests:
+- [`tests/tests.digest.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/tests/tests.digest.js)
+
+* * *
+
 ### <a id="createobservablefunctionfunctionname-listener"></a>`$createObservableFunction(functionName, listener)`
 <a href="#createobservablefunctionfunctionname-listener">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/$rootScopeExtensions.js)
 
 Creates an observable from a given function.
 
 #### Arguments
-1. `functionName`: *(String*): A function name to observe.
+1. `functionName`: *(String)*: A function name to observe.
 2. `listener`: *(Function)*: A listener function that gets executed.
 
 #### Returns
