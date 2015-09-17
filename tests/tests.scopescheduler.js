@@ -11,7 +11,7 @@ asyncTest('calls observeOn', function () {
 
   scope
     .$toObservable('testProperty')
-    .throttle(500)
+    .debounce(500)
     .tap(function () { scope.testProperty = 2; })
     .observeOn(new Rx.ScopeScheduler(scope))
     .subscribe(function () {

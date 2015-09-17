@@ -7,7 +7,7 @@ asyncTest('assigns to simple scope properties', function () {
 
   scope
     .$toObservable('testProperty')
-    .throttle(500)
+    .debounce(500)
     .map(function(change) { return change.newValue + 1; })
     .digest(scope, 'testProperty2')
     .subscribe(function onNext(val) {
@@ -34,7 +34,7 @@ asyncTest('assigns to more complex assignable expressions', function () {
 
   scope
     .$toObservable('testProperty')
-    .throttle(500)
+    .debounce(500)
     .map(function(change) { return change.newValue + 1; })
     .digest(scope, 'ctrl.testProperty2')
     .subscribe(function onNext(val) {
@@ -61,7 +61,7 @@ asyncTest('sends an error if expression is not assignable', function () {
 
   scope
     .$toObservable('testProperty')
-    .throttle(500)
+    .debounce(500)
     .map(function(change) { return change.newValue + 1; })
     .digest(scope, 'testProperty2 === 5')
     .subscribe(function onNext() {
