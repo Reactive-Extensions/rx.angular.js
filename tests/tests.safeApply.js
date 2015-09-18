@@ -11,7 +11,7 @@ asyncTest('calls $apply', function () {
 
   scope
     .$toObservable('testProperty')
-    .throttle(500)
+    .debounce(500)
     .safeApply(scope, function (val) {
       scope.testProperty = 2;
     })
