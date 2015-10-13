@@ -249,20 +249,29 @@
          *
          * @description
          * Digests the specified observables when they produce new values.
-         * The scope variable specified by the observable's key
+         * The scope variable / assignable expression specified by the observable's key
          *   is set to the new value.
          *
-         * @param {object} obj A map where keys are scope properties
-         *   and values are observables.
+         * @param {object.<string, Rx.Observable>} obj A map where keys are scope properties
+         *   (assignable expressions) and values are observables.
          *
-         * @return {boolean} Reference to obj.
+         * @return {Rx.Observable.<{observable: Rx.Observable, expression: string, value: object}>}
+         *   Observable of change objects.
          */
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
-            return observables.map(function(observable, key) {
-              return observable.digest(scope, key);
-            }).publish().refCount();
+            return Rx.Observable.pairs(observables)
+              .flatMap(function(pair) {
+                return pair[1].digest(scope, pair[0])
+                  .map(function(val) {
+                    return {
+                      observable: pair[1],
+                      expression: pair[0],
+                      value: val
+                    };
+                  });
+              }).publish().refCount();
           },
           /**
            * @ngdoc property

@@ -159,3 +159,37 @@ test('can subscribe to event observable', function () {
 
   scope.$emit(EVENT_NAME, PARAM1, PARAM2);
 });
+
+asyncTest('$digestObservables runs digest when observables produce new values', function () {
+  var injector = angular.injector(['ng', 'rx']);
+
+  var scope = injector.get('$rootScope').$new();
+
+  scope.testProperty1 = 1;
+
+  // Simulate 'controller as' scenario with ng-controller & directives.
+  var controller = scope.ctrl = {
+    testProperty2: null
+  };
+
+  var observables = {
+    'testProperty1': Rx.Observable.interval(500)
+      .map(function(val) { return val + 1; }),
+    'ctrl.testProperty2': Rx.Observable.interval(1000)
+      .map(function(val) { return val + 1; })
+  };
+
+  scope.$digestObservables(observables)
+    .skip(3)
+    .take(1)
+    .subscribe(function(change) {
+      start();
+      equal(scope.testProperty1, 3, 'scope property value matches expected');
+      equal(scope.ctrl.testProperty2, 1, 'controller property value matches expected');
+      equal(change.expression, 'testProperty1', 'change contains correct "expression" property');
+      equal(change.observable, observables.testProperty1, 'change contains correct "observable" property');
+      equal(change.value, scope.testProperty1, 'change contains correct "value" property');
+    });
+
+  expect(5);
+});
