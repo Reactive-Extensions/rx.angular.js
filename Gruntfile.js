@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     meta: {
       banner:
         '/*'+
-        'Copyright (c) Microsoft Open Technologies, Inc.  All rights reserved.\r\n' +
+        'Copyright (c) Microsoft.  All rights reserved.\r\n' +
         'Microsoft Open Technologies would like to thank its contributors, a list.\r\n' +
         'of whom are at http://aspnetwebstack.codeplex.com/wikipage?title=Contributors..\r\n' +
         'Licensed under the Apache License, Version 2.0 (the "License"); you.\r\n' +
@@ -20,34 +20,30 @@ module.exports = function (grunt) {
         '*/'
     },
     ngAnnotate: {
-        options: {
-            add: true,
-            singleQuotes: true
-        },
-        'rx.angular': {
-            files: [
-                {
-                    expand: true,
-                    src: 'dist/rx.angular.js'
-                }
-            ]
-        }
+    options: {
+      add: true,
+      singleQuotes: true
+    },
+    'rx.angular': {
+      files: [{
+        expand: true,
+        src: 'dist/rx.angular.js'
+        }]
+      }
     },
     concat: {
       basic: {
         src: [
-          'src/license.js',
-          'src/intro.js',
-          'src/basicheader.js',
+          'src/headers/license.js',
+          'src/headers/intro.js',
+          'src/internal/trycatch.js',
           'src/module.js',
           'src/factory.js',
           'src/observeonscope.js',
           'src/safeApply.js',
           'src/$rootScopeExtensions.js',
           'src/observableRuntimeExtensions.js',
-          'src/scopescheduler.js',
-          'src/manageScope.js',
-          'src/outro.js'
+          'src/headers/outro.js'
         ],
         dest: 'dist/rx.angular.js'
       }
@@ -55,7 +51,7 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         banner:
-          '/* Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.*/'
+          '/* Copyright (c) Microsoft. All rights reserved. See License.txt in the project root for license information.*/'
       },
       basic: {
         options: {

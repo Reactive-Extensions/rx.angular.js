@@ -1,4 +1,4 @@
-# rx.angular.js <sup>v0.0.3</sup>
+# rx.angular.js <sup>v1.0.0</sup>
 
 Reactive Extensions (Rx) is a library for composing asynchronous and event-based programs using observable sequences and Array#extras style operators.
 

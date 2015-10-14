@@ -152,9 +152,9 @@ test('can subscribe to event observable', function () {
   scope
     .$eventToObservable(EVENT_NAME)
     .subscribe(function(data){
-        ok(data.event.name === EVENT_NAME);
-        ok(data.additionalArguments[0] === PARAM1);
-        ok(data.additionalArguments[1] === PARAM2);
+        equal(data[0].name, EVENT_NAME);
+        equal(data[1], PARAM1);
+        equal(data[2], PARAM2);
     });
 
   scope.$emit(EVENT_NAME, PARAM1, PARAM2);

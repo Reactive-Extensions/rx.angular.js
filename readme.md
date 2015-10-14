@@ -32,7 +32,7 @@ And with your HTML markup you can use it like this:
     <li>newValue: {{newValue}</li>
     <li>oldValue: {{oldValue}}</li>
   </ul>  
-  
+
   <input type="text" ng-model="name" />
 </div>
 ```
@@ -93,11 +93,18 @@ There are a growing number of community samples using RxJS and Angular.js, inclu
 
 ## Dive In! ##
 
-You can find the documentation [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/docs) as well as examples [here](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples) and plenty of [unit tests](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/tests).
+Please check out:
+
+ - [Our Code of Conduct](https://github.com/Reactive-Extensions/RxJS/tree/master/code-of-conduct.md)
+ - [The full documentation](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/doc)
+ - [Our many great examples](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples)
+ - [Our design guidelines](https://github.com/Reactive-Extensions/RxJS/tree/master/doc/designguidelines)
+ - [Our contribution guidelines](https://github.com/Reactive-Extensions/RxJS/tree/master/contributing.md)
+ - [Our complete Unit Tests](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/tests)
 
 ## Getting Started
 
-There are a number of ways to get started with RxJS. 
+There are a number of ways to get started with RxJS.
 
 ### Download the Source
 ```bash
@@ -129,7 +136,7 @@ You can contribute by reviewing and sending feedback on code checkins, suggestin
 
 ## License ##
 
-Copyright (c) Microsoft Open Technologies, Inc.  All rights reserved.
+Copyright (c) Microsoft.  All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
 may not use this file except in compliance with the License. You may

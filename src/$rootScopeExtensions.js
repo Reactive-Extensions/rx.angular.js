@@ -34,22 +34,22 @@
                * @return {object} Observable.
                */
               value: function(watchExpression, objectEquality) {
-                  var scope = this;
-                  return observableCreate(function (observer) {
-                      // Create function to handle old and new Value
-                      function listener (newValue, oldValue) {
-                          observer.onNext({ oldValue: oldValue, newValue: newValue });
-                      }
+                var scope = this;
+                return rx.Observable.create(function (observer) {
+                  // Create function to handle old and new Value
+                  function listener (newValue, oldValue) {
+                    observer.onNext({ oldValue: oldValue, newValue: newValue });
+                  }
 
-                      // Returns function which disconnects the $watch expression
-                      var disposable = Rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
+                  // Returns function which disconnects the $watch expression
+                  var disposable = rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
 
-                      scope.$on('$destroy', function(){
-                          disposable.dispose();
-                      });
+                  scope.$on('$destroy', function(){
+                      disposable.dispose();
+                  });
 
-                      return disposable;
-                  }).publish().refCount();
+                  return disposable;
+                }).publish().refCount();
               },
               /**
                * @ngdoc property
@@ -82,22 +82,22 @@
                * @return {object} Observable.
                */
               value: function(watchExpression) {
-                  var scope = this;
-                  return observableCreate(function (observer) {
-                      // Create function to handle old and new Value
-                      function listener (newValue, oldValue) {
-                          observer.onNext({ oldValue: oldValue, newValue: newValue });
-                      }
+                var scope = this;
+                return rx.Observable.create(function (observer) {
+                  // Create function to handle old and new Value
+                  function listener (newValue, oldValue) {
+                    observer.onNext({ oldValue: oldValue, newValue: newValue });
+                  }
 
-                      // Returns function which disconnects the $watch expression
-                      var disposable = Rx.Disposable.create(scope.$watchCollection(watchExpression, listener));
+                  // Returns function which disconnects the $watch expression
+                  var disposable = rx.Disposable.create(scope.$watchCollection(watchExpression, listener));
 
-                      scope.$on('$destroy', function(){
-                          disposable.dispose();
-                      });
+                  scope.$on('$destroy', function(){
+                    disposable.dispose();
+                  });
 
-                      return disposable;
-                  }).publish().refCount();
+                  return disposable;
+                }).publish().refCount();
               },
               /**
                * @ngdoc property
@@ -130,22 +130,22 @@
                * @return {object} Observable.
                */
               value: function(watchExpressions) {
-                  var scope = this;
-                  return observableCreate(function (observer) {
-                      // Create function to handle old and new Value
-                      function listener (newValue, oldValue) {
-                          observer.onNext({ oldValue: oldValue, newValue: newValue });
-                      }
+                var scope = this;
+                return rx.Observable.create(function (observer) {
+                  // Create function to handle old and new Value
+                  function listener (newValue, oldValue) {
+                    observer.onNext({ oldValue: oldValue, newValue: newValue });
+                  }
 
-                      // Returns function which disconnects the $watch expression
-                      var disposable = Rx.Disposable.create(scope.$watchGroup(watchExpressions, listener));
+                  // Returns function which disconnects the $watch expression
+                  var disposable = rx.Disposable.create(scope.$watchGroup(watchExpressions, listener));
 
-                      scope.$on('$destroy', function(){
-                          disposable.dispose();
-                      });
+                  scope.$on('$destroy', function(){
+                    disposable.dispose();
+                  });
 
-                      return disposable;
-                  }).publish().refCount();
+                  return disposable;
+                }).publish().refCount();
               },
               /**
                * @ngdoc property
@@ -178,22 +178,27 @@
            *
            * @return {object} Observable object.
            */
-          value: function(eventName) {
+          value: function(eventName, selector) {
             var scope = this;
-            return observableCreate(function (observer) {
+            return rx.Observable.create(function (observer) {
               function listener () {
-                observer.onNext({
-                  'event': arguments[0],
-                  'additionalArguments': slice.call(arguments, 1)
-                });
+                var len = arguments.length, args = new Array(len);
+                for (var i = 0; i < len; i++) { args[i] = arguments[i]; }
+                if (angular.isFunction(selector)) {
+                  var result = tryCatch(selector).apply(null, args);
+                  if (result === errorObj) { return observer.onError(result.e); }
+                  observer.onNext(result);
+                } else if (args.length === 1) {
+                  observer.onNext(args[0]);
+                } else {
+                  observer.onNext(args);
+                }
               }
 
               // Returns function which disconnects from the event binding
-              var disposable = disposableCreate(scope.$on(eventName, listener));
+              var disposable = rx.Disposable.create(scope.$on(eventName, listener));
 
-              scope.$on('$destroy', function(){
-                disposable.isDisposed || disposable.dispose();
-              });
+              scope.$on('$destroy', function(){ disposable.dispose(); });
 
               return disposable;
             }).publish().refCount();
@@ -230,7 +235,7 @@
            * @return {function} Remove listener function.
            */
           value: function(functionName, listener) {
-              return rx.createObservableFunction(this, functionName, listener);
+            return rx.createObservableFunction(this, functionName, listener);
           },
           /**
            * @ngdoc property
@@ -261,7 +266,7 @@
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
-            return Rx.Observable.pairs(observables)
+            return rx.Observable.pairs(observables)
               .flatMap(function(pair) {
                 return pair[1].digest(scope, pair[0])
                   .map(function(val) {

@@ -16,15 +16,40 @@
   * @return {function} Factory function that creates obersables.
   */
   rxModule.factory('observeOnScope', function(rx) {
-    return function(scope, watchExpression, objectEquality) {
-      return rx.Observable.create(function (observer) {
-        // Create function to handle old and new Value
-        function listener (newValue, oldValue) {
-          observer.onNext({ oldValue: oldValue, newValue: newValue });
-        }
+    var ObserveOnScope = (function(__super__) {
+      rx.internals.inherits(ObserveOnScope, __super__);
+      function ObserveOnScope(scope, expr, eq) {
+        this._scope = scope;
+        this._expr = expr;
+        this._eq = eq;
+      }
 
-        // Returns function which disconnects the $watch expression
-        return scope.$watch(watchExpression, listener, objectEquality);
-      });
+      function createListener(o) {
+        return function listener(newValue, oldValue) {
+          o.onNext({ oldValue: oldValue, newValue: newValue });
+        };
+      }
+
+      ObserveOnScope.prototype.subscribeCore = function (o) {
+        var listener = createListener(o);
+        return new InnerDisposable(scope.$watch(watchExpression, listener, objectEquality));
+      };
+
+      function InnerDisposable(fn) {
+        this._fn = fn;
+        this.isDisposed = false;
+      }
+
+      InnerDisposable.prototype.dispose = function () {
+        if (!this.isDisposed) {
+          this._fn();
+        }
+      };
+
+      return ObserveOnScope;
+    }(rx.ObservableBase));
+
+    return function(scope, watchExpression, objectEquality) {
+      return new ObserveOnScope(scope, watchExpression, objectEquality);
     };
   });
