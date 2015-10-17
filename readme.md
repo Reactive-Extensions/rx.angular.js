@@ -96,7 +96,7 @@ There are a growing number of community samples using RxJS and Angular.js, inclu
 Please check out:
 
  - [Our Code of Conduct](https://github.com/Reactive-Extensions/RxJS/tree/master/code-of-conduct.md)
- - [The full documentation](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/doc)
+ - [The full documentation](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/docs)
  - [Our many great examples](https://github.com/Reactive-Extensions/rx.angular.js/tree/master/examples)
  - [Our design guidelines](https://github.com/Reactive-Extensions/RxJS/tree/master/doc/designguidelines)
  - [Our contribution guidelines](https://github.com/Reactive-Extensions/RxJS/tree/master/contributing.md)
