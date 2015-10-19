@@ -1,3 +1,5 @@
+  function noop () { }
+
   Rx.Observable.prototype.safeApply = function($scope, fn){
     fn = angular.isFunction(fn) ? fn : noop;
 
