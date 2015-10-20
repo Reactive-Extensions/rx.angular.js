@@ -1,12 +1,10 @@
 [![Build Status](https://travis-ci.org/Reactive-Extensions/rx.angular.js.png)](https://travis-ci.org/Reactive-Extensions/rx.angular.js)
 [![GitHub version](http://img.shields.io/github/tag/reactive-extensions/rx.angular.js.svg)](https://github.com/Reactive-Extensions/rx.angular.js)
-[![NPM version](http://img.shields.io/npm/v/rx-angular.svg)](https://npmjs.org/package/rx-angular)
-[![Downloads](http://img.shields.io/npm/dm/rx-angular.svg)](https://npmjs.org/package/rx-angular)
-[![NuGet](http://img.shields.io/nuget/v/RxJS-Bridges-Angular.svg)](http://www.nuget.org/packages/RxJS-Bridges-Angular/)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
-# `rx.angular.js` - Reactive Extensions Bindings for AngularJS
+[![NPM version](http://img.shields.io/npm/v/rx-angular.svg)](https://npmjs.org/package/rx-angular-lite)
+[![Downloads](http://img.shields.io/npm/dm/rx-angular.svg)](https://npmjs.org/package/rx-angular-lite)
+# `rx.angular.lite.js` - Reactive Extensions Bindings for AngularJS Lite
 
-This library serves as a bridge between the [Reactive Extensions for JavaScript (RxJS)](https://github.com/Reactive-Extensions/RxJS) and [AngularJS](http://angularjs.org/).
+This library serves as a bridge between the [Reactive Extensions for JavaScript (RxJS)](https://github.com/Reactive-Extensions/RxJS) Lite library and [AngularJS](http://angularjs.org/).
 
 With this library, you will be able to do such things as easily watch values as they change, as observable sequences such as:
 
@@ -109,25 +107,14 @@ There are a number of ways to get started with RxJS.
 ### Download the Source
 ```bash
 $ git clone https://github.com/Reactive-Extensions/rx.angular.js.git
-$ cd ./rx.angular.js
+$ cd rx.angular.js/modules/rx.lite.angular
 ```
 ### Installing with [NPM](https://npmjs.org/)
 ```bash
-npm install rx-angular
-npm install -g rx-angular
+npm install rx-angular-lite
+npm install -g rx-angular-lite
 ```
-### Installing with [Bower](http://bower.io/)
-```bash
-bower install angular-rx
-```
-### Installing with [Jam](http://jamjs.org/)
-```bash
-jam install rx-angular
-```
-### Installing All of RxJS via [NuGet](http://nuget.org/)
-```PowerShell
-PM> Install-Package RxJS-Bridges-Angular
-```
+
 ## License ##
 
 Copyright (c) Microsoft.  All rights reserved.

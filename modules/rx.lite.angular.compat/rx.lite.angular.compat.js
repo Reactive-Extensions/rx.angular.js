@@ -15,19 +15,19 @@
     freeModule = objectTypes[typeof module] && module && !module.nodeType && module,
     moduleExports = freeModule && freeModule.exports === freeExports && freeExports,
     freeGlobal = objectTypes[typeof global] && global;
-  
+
   if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
     root = freeGlobal;
   }
 
   // Because of build optimizers
   if (typeof define === 'function' && define.amd) {
-    define(['rx', 'angular', 'exports'], function (Rx, angular, exports) {
+    define(['rx-lite-compat', 'angular', 'exports'], function (Rx, angular, exports) {
       root.Rx = factory(root, exports, Rx, angular);
       return root.Rx;
     });
   } else if (typeof module == 'object' && module && module.exports == freeExports) {
-    module.exports = factory(root, module.exports, require('rx'), require('angular'));
+    module.exports = factory(root, module.exports, require('rx-lite-compat'), require('angular'));
   } else {
     root.Rx = factory(root, {}, root.Rx, root.angular);
   }
@@ -86,7 +86,7 @@ function thrower(e) {
    * @description
    * Factory service that exposes the global `Rx` object to the Angular world.
    */
-  rxModule.factory('rx', ['$window', function($window) {
+  rxModule.factory('rx', function($window) {
     $window.Rx || ($window.Rx = Rx);
 
     var CreateObservableFunction = (function(__super__) {
@@ -139,7 +139,7 @@ function thrower(e) {
     };
 
     return $window.Rx;
-  }]);
+  });
 
   /**
   * @ngdoc service
@@ -158,7 +158,7 @@ function thrower(e) {
   *
   * @return {function} Factory function that creates obersables.
   */
-  rxModule.factory('observeOnScope', ['rx', function(rx) {
+  rxModule.factory('observeOnScope', function(rx) {
     var ObserveOnScope = (function(__super__) {
       rx.internals.inherits(ObserveOnScope, __super__);
       function ObserveOnScope(scope, expr, eq) {
@@ -196,7 +196,7 @@ function thrower(e) {
     return function(scope, watchExpression, objectEquality) {
       return new ObserveOnScope(scope, watchExpression, objectEquality);
     };
-  }]);
+  });
 
   function noop () { }
 
@@ -210,7 +210,7 @@ function thrower(e) {
     });
   };
 
-  rxModule.config(['$provide', function($provide) {
+  rxModule.config(function($provide) {
     /**
      * @ngdoc service
      * @name rx.$rootScope
@@ -222,7 +222,7 @@ function thrower(e) {
      * with additional methods. These methods are Rx related methods, such as
      * methods to create observables or observable functions.
      */
-    $provide.decorator('$rootScope', ['$delegate', 'rx', function($delegate, rx) {
+    $provide.decorator('$rootScope', function($delegate, rx) {
 
       Object.defineProperties($delegate.constructor.prototype, {
         /**
@@ -504,10 +504,10 @@ function thrower(e) {
       });
 
       return $delegate;
-    }]);
-  }]);
+    });
+  });
 
-  rxModule.run(['$parse', function($parse) {
+  rxModule.run(function($parse) {
 
     var DigestObservable = (function(__super__) {
       Rx.internals.inherits(DigestObservable, __super__);
@@ -563,7 +563,7 @@ function thrower(e) {
     Rx.Observable.prototype.digest = function($scope, prop) {
       return new DigestObservable(this, $scope, prop);
     };
-  }]);
+  });
 
   return Rx;
 }));

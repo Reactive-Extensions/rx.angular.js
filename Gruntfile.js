@@ -46,6 +46,36 @@ module.exports = function (grunt) {
           'src/headers/outro.js'
         ],
         dest: 'dist/rx.angular.js'
+      },
+      lite: {
+        src: [
+          'src/headers/license.js',
+          'src/headers/intro.lite.js',
+          'src/internal/trycatch.js',
+          'src/module.js',
+          'src/factory.js',
+          'src/observeonscope.js',
+          'src/safeApply.js',
+          'src/$rootScopeExtensions.js',
+          'src/observableRuntimeExtensions.js',
+          'src/headers/outro.js'
+        ],
+        dest: 'modules/rx.lite.angular/rx.lite.angular.js'
+      },
+      'lite-compat': {
+        src: [
+          'src/headers/license.js',
+          'src/headers/intro.lite.compat.js',
+          'src/internal/trycatch.js',
+          'src/module.js',
+          'src/factory.js',
+          'src/observeonscope.js',
+          'src/safeApply.js',
+          'src/$rootScopeExtensions.js',
+          'src/observableRuntimeExtensions.js',
+          'src/headers/outro.js'
+        ],
+        dest: 'modules/rx.lite.angular.compat/rx.lite.angular.compat.js'
       }
     },
     uglify: {
@@ -59,6 +89,20 @@ module.exports = function (grunt) {
           sourceMapName: 'dist/rx.angular.map'
         },
         files: {'dist/rx.angular.min.js': ['dist/rx.angular.js'] }
+      },
+      lite: {
+        options: {
+          sourceMap: true,
+          sourceMapName: 'modules/rx.lite.angular/rx.lite.angular.map'
+        },
+        files: {'modules/rx.lite.angular/rx.lite.angular.min.js': ['modules/rx.lite.angular/rx.lite.angular.js'] }
+      },
+      'lite-compat': {
+        options: {
+          sourceMap: true,
+          sourceMapName: 'modules/rx.lite.angular.compat/rx.lite.angular.compat.map'
+        },
+        files: {'modules/rx.lite.angular.compat/rx.lite.angular.compat.min.js': ['modules/rx.lite.angular.compat/rx.lite.angular.compat.js'] }
       }
     },
     qunit: {
@@ -99,5 +143,17 @@ module.exports = function (grunt) {
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['concat:basic', 'ngAnnotate', 'uglify:basic', 'qunit']);
+  grunt.registerTask('default', [
+    'concat:basic',
+    'concat:lite',
+    'concat:lite-compat',
+
+    'ngAnnotate',
+
+    'uglify:basic',
+    'uglify:lite',
+    'uglify:lite-compat',
+
+    'qunit'
+  ]);
 };

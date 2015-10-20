@@ -22,6 +22,7 @@
         this._scope = scope;
         this._expr = expr;
         this._eq = eq;
+        __super__.call(this);
       }
 
       function createListener(o) {
