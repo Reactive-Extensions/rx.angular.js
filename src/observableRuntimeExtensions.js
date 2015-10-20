@@ -36,7 +36,10 @@
 
       DigestObserver.prototype.next = function (x) {
         if (!this.$scope.$$phase) {
-          this.$scope.$apply(this.propSetter(this.$scope, x));
+          var _this = this;
+          this.$scope.$apply(function() {
+            _this.propSetter(_this.$scope, x);
+          });
         } else {
           this.propSetter(this.$scope, x);
         }

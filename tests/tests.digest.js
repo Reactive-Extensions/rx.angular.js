@@ -35,12 +35,12 @@ asyncTest('assigns to more complex assignable expressions', function () {
   scope
     .$toObservable('testProperty')
     .debounce(500)
-    .map(function(change) { return change.newValue + 1; })
+    .map(function(change) { return change.newValue + "®"; })
     .digest(scope, 'ctrl.testProperty2')
     .subscribe(function onNext(val) {
       start();
-      equal(val, 2, 'digest() should pass the value through to observers');
-      equal(controller.testProperty2, 2, 'digest() should update the given controller property');
+      equal(val, "1®", 'digest() should pass the value through to observers');
+      equal(controller.testProperty2, "1®", 'digest() should update the given controller property');
     });
 
   scope.$apply(function () {
