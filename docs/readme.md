@@ -246,7 +246,7 @@ Creates an observable from a given function.
 
 #### Arguments
 1. `functionName`: *(String)*: A function name to observe.
-2. `listener`: *(Function)*: A listener function that gets executed.
+2. `[listener]`: *(Function)*: A listener function that gets executed.
 
 #### Returns
 *(Rx)*: A new Observable object with the watch expression in place.
