@@ -87,7 +87,7 @@ Creates a factory which allows the user to observe a property on a given scope t
 2. `watchExpression`: Expression that is evaluated on each `$digest` cycle. A change in the return value triggers a call to the listener.
     - `string`: Evaluated as expression
     - `function(scope)`: called with current scope as a parameter.
-3. `[objectEquality]`: *(Function)*: Compare object for equality rather than for reference.
+3. `[objectEquality]`: *(boolean)*: Compare object for equality rather than for reference.
 
 #### Returns
 *(Rx)*: The root of RxJS
@@ -425,7 +425,7 @@ Creates an observable from a watch expression.
 1. `watchExpression`: Expression that is evaluated on each `$digest` cycle. A change in the return value triggers a call to the listener.
     - `string`: Evaluated as expression
     - `function(scope)`: called with current scope as a parameter.
-2. `[objectEquality]`: *(Function)*: Compare object for equality rather than for reference.
+2. `[objectEquality]`: *(boolean)*: Compare object for equality rather than for reference.
 
 #### Returns
 *(Rx)*: A new Observable object with the watch expression in place.
