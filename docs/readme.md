@@ -24,7 +24,7 @@ Observable Methods:
 - [`$createObservableFunction`](#createobservablefunctionfunctionname-listener)
 - [`$digestObservables`](#digestobservables)
 - [`$eventToObservable`](#eventtoobservableeventname)
-- ['$toObservable'](#toobservablewatchexpression-objectequality)
+- [`$toObservable`](#toobservablewatchexpression-objectequality)
 
 * * *
 
