@@ -209,7 +209,7 @@ angular.module('rxexamples', ['rx'])
       .digest(
         $scope,
         'counter'
-      .subscribe();
+      ).subscribe();
 
   });
 ```
