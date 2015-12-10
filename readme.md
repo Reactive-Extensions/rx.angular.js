@@ -29,7 +29,7 @@ And with your HTML markup you can use it like this:
   <h2>Reactive Angular</h2>
   <ul class="list-unstyled">
     <li>observedChange {{observedChange}}</li>
-    <li>newValue: {{newValue}</li>
+    <li>newValue: {{newValue}}</li>
     <li>oldValue: {{oldValue}}</li>
   </ul>  
 
