@@ -2,7 +2,7 @@
   "name": "rx-lite-angular-compat",
   "title": "The Reactive Extensions Bindings for the AngularJS.",
   "description": "Library for bridging between RxJS and AngularJS.",
-  "version": "1.0.4",
+  "version": "1.1.2",
   "homepage": "https://github.com/Reactive-Extensions/rx.angular.js",
   "author": {
     "name": "Microsoft"
