@@ -12,7 +12,7 @@ function tryCatcherGen(tryCatchTarget) {
 }
 
 function tryCatch(fn) {
-  if (!isFunction(fn)) { throw new TypeError('fn must be a function'); }
+  if (!angular.isFunction(fn)) { throw new TypeError('fn must be a function'); }
   return tryCatcherGen(fn);
 }
 
