@@ -29,7 +29,8 @@
     "grunt-contrib-qunit": "*",
     "grunt-contrib-uglify": "*",
     "grunt-ng-annotate": "^0.10.0",
-    "load-grunt-tasks": "*"
+    "load-grunt-tasks": "*",
+    "tsd": "^0.6.5"
   },
   "jam": {
     "main": "dist/rx.angular.js"
@@ -44,6 +45,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "postinstall": "node node_modules/tsd/build/cli.js install"
   }
 }
