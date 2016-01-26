@@ -32,8 +32,7 @@
       }
 
       ObserveOnScope.prototype.subscribeCore = function (o) {
-        var listener = createListener(o);
-        return new InnerDisposable(this._scope.$watch(this._expr, listener, this._eq));
+        return new InnerDisposable(this._scope.$watch(this._expr, createListener(o), this._eq));
       };
 
       function InnerDisposable(fn) {
@@ -44,6 +43,7 @@
       InnerDisposable.prototype.dispose = function () {
         if (!this.isDisposed) {
           this._fn();
+          this.isDisposed = true;
         }
       };
 

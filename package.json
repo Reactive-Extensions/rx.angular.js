@@ -11,17 +11,12 @@
     "type": "git",
     "url": "https://github.com/Reactive-Extensions/rx.angular.js.git"
   },
-  "licenses": [
-    {
-      "type": "Apache License, Version 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  ],
+  "license": "Apache-2.0",
   "dependencies": {
     "rx": "*"
   },
   "devDependencies": {
-    "angular": "^1.3.15",
+    "angular": "^1.4.9",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-concat": "*",

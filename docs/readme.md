@@ -26,6 +26,9 @@ Observable Methods:
 - [`$eventToObservable`](#eventtoobservableeventname)
 - [`$toObservable`](#toobservablewatchexpression-objectequality)
 
+Schedulers:
+- [`Rx.ScopeScheduler`](#rxscopescheduler)
+
 * * *
 
 ### <a id="rx"></a>`rx`
@@ -469,5 +472,47 @@ NuGet Packages:
 
 Unit Tests:
 - [`/tests/tests.$rootScopeExtensions.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/tests/$rootScopeExtensions.js)
+
+* * *
+
+### <a id="rxscopescheduler"></a>`Rx.ScopeScheduler`
+<a href="#rxscopescheduler">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/scopescheduler.js)
+
+Creates a scheduler that safely applies on the given scope for updates.
+
+#### Example
+```js
+angular.module('rxexamples', ['rx'])
+  .controller('AppCtrl', function($scope, rx) {
+
+    $scope.time = Date.now();
+
+    rx.Observable.interval(1000, new rx.ScopeScheduler($scope))
+      .subscribe(function () { $scope.time = Date.now(); });
+  });
+```
+
+### Location
+
+File:
+- [`/src/scopescheduler.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/scopescheduler.js)
+
+Dist:
+- [`rx.angular.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/dist/rx.angular.js)
+
+Prerequisites:
+- [`rx.lite.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.js) | [`rx.lite.compat.js`](https://github.com/Reactive-Extensions/RxJS/blob/master/rx.lite.compat.js)
+
+NPM Packages:
+- [`rx-angular`](https://www.npmjs.org/package/rx-angular)
+
+Bower Packages:
+- `angular-rx`
+
+NuGet Packages:
+- [`RxJS-Bridges-Angular`](http://www.nuget.org/packages/RxJS-Bridges-Angular)
+
+Unit Tests:
+- [`/tests/tests.scopescheduler.js`](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/tests/scopescheduler.js)
 
 * * *

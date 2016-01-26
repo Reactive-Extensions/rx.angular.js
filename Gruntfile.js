@@ -43,6 +43,7 @@ module.exports = function (grunt) {
           'src/safeApply.js',
           'src/$rootScopeExtensions.js',
           'src/observableRuntimeExtensions.js',
+          'src/scopescheduler.js',
           'src/headers/outro.js'
         ],
         dest: 'dist/rx.angular.js'
@@ -58,6 +59,7 @@ module.exports = function (grunt) {
           'src/safeApply.js',
           'src/$rootScopeExtensions.js',
           'src/observableRuntimeExtensions.js',
+          'src/scopescheduler.js',
           'src/headers/outro.js'
         ],
         dest: 'modules/rx.lite.angular/rx.lite.angular.js'
@@ -73,6 +75,7 @@ module.exports = function (grunt) {
           'src/safeApply.js',
           'src/$rootScopeExtensions.js',
           'src/observableRuntimeExtensions.js',
+          'src/scopescheduler.js',
           'src/headers/outro.js'
         ],
         dest: 'modules/rx.lite.angular.compat/rx.lite.angular.compat.js'

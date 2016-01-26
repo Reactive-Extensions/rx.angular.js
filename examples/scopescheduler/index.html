@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="example">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Rx for AngularJS Rocks!</title>
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body ng-controller="AppCtrl">
+    <div class="container">
+        <div class="page-header">
+            <h1>RxJS for AngularJS Bindings Scope Scheduler Example</h1>
+            <p class="lead">Example to show the Konami Code in action!</p>
+        </div>
+        <div class="row">
+            <h1>Current Time</h1>
+            <div class="col-lg-12">{{time}}</div>
+        </div>
+    </div>
+    <!-- make sure you include angular before Rx -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/rxjs/4.0.7/rx.all.js"></script>
+    <script src="../../dist/rx.angular.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
