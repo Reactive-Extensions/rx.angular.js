@@ -1,2 +1,1 @@
-require('./dist/rx.angular');
-module.exports = 'rx';
+module.exports = require('./dist/rx.angular');
