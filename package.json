@@ -2,7 +2,7 @@
   "name": "rx-angular",
   "title": "The Reactive Extensions Bindings for the AngularJS.",
   "description": "Library for bridging between RxJS and AngularJS.",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "homepage": "https://github.com/Reactive-Extensions/rx.angular.js",
   "author": {
     "name": "Microsoft"
