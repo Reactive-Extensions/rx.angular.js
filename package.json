@@ -40,7 +40,6 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "grunt",
-    "postinstall": "node node_modules/tsd/build/cli.js install"
+    "test": "grunt"
   }
 }
