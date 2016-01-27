@@ -2,8 +2,6 @@
  * Created by Giles Roadnight on 26/01/2016.
  */
 
-///<reference path="../typings/tsd.d.ts" />
-
 declare module Rx {
 
   export interface Observable<T> {
@@ -26,5 +24,13 @@ declare module angular{
     $digestObservables<T>( observables: {[key:string]:Rx.Observable<T>} ): Rx.Observable<IObservableChange<T>>;
     $eventToObservable<T>(eventName: string): Rx.Observable<T>;
     $toObservable<T>(watchExpression: (scope: ng.IScope) => void | string, objectEquality?:boolean ): Rx.Observable<T>;
+  }
+
+  export interface ScopeScheduler extends Rx.IScheduler {
+    constructor(scope: ng.IScope) : ScopeScheduler;
+  }
+
+  export interface ScopeSchedulerStatic extends Rx.SchedulerStatic {
+    new ($scope: angular.IScope): ScopeScheduler;
   }
 }

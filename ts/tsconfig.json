@@ -6,7 +6,8 @@
     "diagnostics": true
   },
   "files": [
-    "rx.angular.d.ts"
+    "rx.angular.d.ts",
+    "../typings/tsd.d.ts"
   ],
   "exclude": [
   ]
