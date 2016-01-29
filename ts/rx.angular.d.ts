@@ -9,6 +9,16 @@ declare module Rx {
 
     digest( scope: ng.IScope, prop: string ): Observable<T>;
   }
+
+  export interface ScopeScheduler extends IScheduler {
+    constructor(scope: ng.IScope) : ScopeScheduler;
+  }
+
+  export interface ScopeSchedulerStatic extends SchedulerStatic {
+    new ($scope: angular.IScope): ScopeScheduler;
+  }
+
+  export var ScopeScheduler: ScopeSchedulerStatic;
 }
 
 declare module angular{
@@ -24,13 +34,5 @@ declare module angular{
     $digestObservables<T>( observables: {[key:string]:Rx.Observable<T>} ): Rx.Observable<IObservableChange<T>>;
     $eventToObservable<T>(eventName: string): Rx.Observable<T>;
     $toObservable<T>(watchExpression: (scope: ng.IScope) => void | string, objectEquality?:boolean ): Rx.Observable<T>;
-  }
-
-  export interface ScopeScheduler extends Rx.IScheduler {
-    constructor(scope: ng.IScope) : ScopeScheduler;
-  }
-
-  export interface ScopeSchedulerStatic extends Rx.SchedulerStatic {
-    new ($scope: angular.IScope): ScopeScheduler;
   }
 }
