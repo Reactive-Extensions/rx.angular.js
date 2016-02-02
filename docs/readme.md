@@ -81,7 +81,7 @@ Unit Tests:
 * * *
 
 ### <a id="observeonscopescope-watchexpression-objectequality"></a>`observeOnScope(scope, watchExpression, [objectEquality])`
-<a href="#observeonscopescope-watchexpression-objectequality">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/observeronscope.js "View in source")
+<a href="#observeonscopescope-watchexpression-objectequality">#</a> [&#x24C8;](https://github.com/Reactive-Extensions/rx.angular.js/blob/master/src/observeonscope.js "View in source")
 
 Creates a factory which allows the user to observe a property on a given scope to check for old and new values.
 
