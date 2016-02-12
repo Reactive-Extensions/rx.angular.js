@@ -33,6 +33,6 @@ declare module angular{
     $createObservableFunction<T>( functionName: string, listener: (data) => void ): Rx.Observable<T>;
     $digestObservables<T>( observables: {[key:string]:Rx.Observable<T>} ): Rx.Observable<IObservableChange<T>>;
     $eventToObservable<T>(eventName: string): Rx.Observable<T>;
-    $toObservable<T>(watchExpression: (scope: ng.IScope) => void | string, objectEquality?:boolean ): Rx.Observable<T>;
+    $toObservable<T>(watchExpression: ((scope: ng.IScope) => any|string) | string, objectEquality?:boolean ): Rx.Observable<T>;
   }
 }
