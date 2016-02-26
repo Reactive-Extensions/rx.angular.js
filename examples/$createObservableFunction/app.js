@@ -32,6 +32,7 @@
         .flatMapLatest(searchWikipedia)
         .subscribe(function(results) {
             $scope.results = results;
+            $scope.$apply();
         });
     });
 
