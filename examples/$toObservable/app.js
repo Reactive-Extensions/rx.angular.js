@@ -45,7 +45,10 @@
       .map(function(data) { return data.newValue; })
       .distinctUntilChanged()
       .flatMapLatest(search)
-      .subscribe(function(val){ $scope.results = val; });
+      .subscribe(function(val){
+        $scope.results = val;
+        $scope.$digest();
+      });
   });
 
 }.call(this));
