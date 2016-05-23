@@ -561,7 +561,7 @@ function thrower(e) {
       }
 
       DigestObserver.prototype.next = function (x) {
-        if (!this.$scope.$$phase) {
+        if (!this.$scope.$$phase && !this.$scope.$root.$$phase) {
           var _this = this;
           this.$scope.$apply(function() {
             _this.propSetter(_this.$scope, x);
