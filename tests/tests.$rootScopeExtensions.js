@@ -70,7 +70,7 @@ test('dispose calls unbind function which was returned from $watch', function ()
 
   ok(called === 1);
 
-  disposable.dispose();
+  disposable.unsubscribe();
 
   scope.$apply(function(){
       scope.testProperty = 2;
@@ -135,7 +135,7 @@ test('observable function removed from scope when disposed', function () {
       .$createObservableFunction('clickMe')
       .subscribe(function(val){});
 
-  subscription.dispose();
+  subscription.unsubscribe();
 
   ok(scope.clickMe === undefined);
 });

@@ -9,7 +9,7 @@
       .takeWhile(function () {
         return !$scope.$$destroyed;
       })
-      .tap(
+      .do(
         function (data){
           ($scope.$$phase || $scope.$root.$$phase) ?
             onNext(data) :
