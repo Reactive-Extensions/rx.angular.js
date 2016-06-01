@@ -55,6 +55,14 @@ function thrower(e) {
   throw e;
 }
 
+var RxNg = RxNg || {};
+
+RxNg.inherits = function (child, parent) {
+    function __() { this.constructor = child; }
+    __.prototype = parent.prototype;
+    child.prototype = new __();
+  };
+
   /**
    * @ngdoc overview
    * @name rx
@@ -89,53 +97,28 @@ function thrower(e) {
   rxModule.factory('rx', ['$window', function($window) {
     $window.Rx || ($window.Rx = Rx);
 
-    var CreateObservableFunction = (function(__super__) {
-      Rx.internals.inherits(CreateObservableFunction, __super__);
-      function CreateObservableFunction(self, name, fn) {
-        this._self = self;
-        this._name = name;
-        this._fn = fn;
-        __super__.call(this);
-      }
-
-      CreateObservableFunction.prototype.subscribeCore = function (o) {
-        var fn = this._fn;
-        this._self[this._name] = function () {
+    Rx.createObservableFunction = function (self, functionName, listener) {
+      var subscribeCore = function (o) {
+        self[functionName] = function () {
           var len = arguments.length, args = new Array(len);
           for (var i = 0; i < len; i++) { args[i] = arguments[i]; }
 
-          if (angular.isFunction(fn)) {
-            var result = tryCatch(fn).apply(this, args);
-            if (result === errorObj) { return o.onError(result.e); }
-            o.onNext(result);
+          if (angular.isFunction(listener)) {
+            var result = tryCatch(listener).apply(this, args);
+            if (result === errorObj) { return o.error(result.e); }
+            o.next(result);
           } else if (args.length === 1) {
-            o.onNext(args[0]);
+            o.next(args[0]);
           } else {
-            o.onNext(args);
+            o.next(args);
           }
         };
 
-        return new InnerDisposable(this._self, this._name);
+        return function() {
+          delete self[functionName];
+        };
       };
-
-      function InnerDisposable(self, name) {
-        this._self = self;
-        this._name = name;
-        this.isDisposed = false;
-      }
-
-      InnerDisposable.prototype.dispose = function () {
-        if (!this.isDisposed) {
-          this.isDisposed = true;
-          delete this._self[this._name];
-        }
-      };
-
-      return CreateObservableFunction;
-    }(Rx.ObservableBase));
-
-    Rx.createObservableFunction = function (self, functionName, listener) {
-      return new CreateObservableFunction(self, functionName, listener).publish().refCount();
+      return Rx.Observable.create(subscribeCore).publish().refCount();
     };
 
     return $window.Rx;
@@ -160,7 +143,7 @@ function thrower(e) {
   */
   rxModule.factory('observeOnScope', ['rx', function(rx) {
     var ObserveOnScope = (function(__super__) {
-      rx.internals.inherits(ObserveOnScope, __super__);
+      RxNg.inherits(ObserveOnScope, __super__);
       function ObserveOnScope(scope, expr, eq) {
         this._scope = scope;
         this._expr = expr;
@@ -209,7 +192,7 @@ function thrower(e) {
       .takeWhile(function () {
         return !$scope.$$destroyed;
       })
-      .tap(
+      .do(
         function (data){
           ($scope.$$phase || $scope.$root.$$phase) ?
             onNext(data) :
@@ -267,14 +250,14 @@ function thrower(e) {
                 return rx.Observable.create(function (observer) {
                   // Create function to handle old and new Value
                   function listener (newValue, oldValue) {
-                    observer.onNext({ oldValue: oldValue, newValue: newValue });
+                    observer.next({ oldValue: oldValue, newValue: newValue });
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
+                  var disposable = new rx.Subscription(scope.$watch(watchExpression, listener, objectEquality));
 
                   scope.$on('$destroy', function(){
-                      disposable.dispose();
+                      disposable.unsubscribe();
                   });
 
                   return disposable;
@@ -319,7 +302,7 @@ function thrower(e) {
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watchCollection(watchExpression, listener));
+                  var disposable = new rx.Subscription(scope.$watchCollection(watchExpression, listener));
 
                   scope.$on('$destroy', function(){
                     disposable.dispose();
@@ -367,7 +350,7 @@ function thrower(e) {
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watchGroup(watchExpressions, listener));
+                  var disposable = new rx.Subscription(scope.$watchGroup(watchExpressions, listener));
 
                   scope.$on('$destroy', function(){
                     disposable.dispose();
@@ -415,17 +398,17 @@ function thrower(e) {
                 for (var i = 0; i < len; i++) { args[i] = arguments[i]; }
                 if (angular.isFunction(selector)) {
                   var result = tryCatch(selector).apply(null, args);
-                  if (result === errorObj) { return observer.onError(result.e); }
-                  observer.onNext(result);
+                  if (result === errorObj) { return observer.error(result.e); }
+                  observer.next(result);
                 } else if (args.length === 1) {
-                  observer.onNext(args[0]);
+                  observer.next(args[0]);
                 } else {
-                  observer.onNext(args);
+                  observer.next(args);
                 }
               }
 
               // Returns function which disconnects from the event binding
-              var disposable = rx.Disposable.create(scope.$on(eventName, listener));
+              var disposable = new rx.Subscription(scope.$on(eventName, listener));
 
               scope.$on('$destroy', function(){ disposable.dispose(); });
 
@@ -448,7 +431,7 @@ function thrower(e) {
          * @name rx.$rootScope.$createObservableFunction
          *
          * @description
-         * Provides a method to create obsersables from functions.
+         * Provides a method to create observables from functions.
          */
         '$createObservableFunction': {
           /**
@@ -495,7 +478,10 @@ function thrower(e) {
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
-            return rx.Observable.pairs(observables)
+            var keyValuePairs = Object.keys(observables).map(function(key) {
+               return [key, observables[key]]
+              });
+            return rx.Observable.from(keyValuePairs)
               .flatMap(function(pair) {
                 return pair[1].digest(scope, pair[0])
                   .map(function(val) {
@@ -526,33 +512,8 @@ function thrower(e) {
 
   rxModule.run(['$parse', function($parse) {
 
-    var DigestObservable = (function(__super__) {
-      Rx.internals.inherits(DigestObservable, __super__);
-      function DigestObservable(source, $scope, prop) {
-        this.source = source;
-        this.$scope = $scope;
-        this.prop = prop;
-        __super__.call(this);
-      }
-
-      DigestObservable.prototype.subscribeCore = function (o) {
-        var propSetter = $parse(this.prop).assign;
-        if (!propSetter) {
-          return o.onError(new Error('Property or expression is not assignable.'));
-        }
-
-        var m = new Rx.SingleAssignmentDisposable();
-        m.setDisposable(this.source.subscribe(new DigestObserver(o, this.$scope, propSetter)));
-        this.$scope.$on('$destroy', function () { m.dispose(); });
-
-        return m;
-      };
-
-      return DigestObservable;
-    }(Rx.ObservableBase));
-
     var DigestObserver = (function(__super__) {
-      Rx.internals.inherits(DigestObserver, __super__);
+      RxNg.inherits(DigestObserver, __super__);
       function DigestObserver(o, $scope, propSetter) {
         this.o = o;
         this.$scope = $scope;
@@ -569,16 +530,30 @@ function thrower(e) {
         } else {
           this.propSetter(this.$scope, x);
         }
-        this.o.onNext(x);
+        this.o.next(x);
       };
-      DigestObserver.prototype.error = function (e) { this.o.onError(e); };
-      DigestObserver.prototype.completed = function () { this.o.onCompleted(); };
+      DigestObserver.prototype.error = function (e) { this.o.error(e); };
+      DigestObserver.prototype.completed = function () { this.o.completed(); };
 
       return DigestObserver;
-    }(Rx.internals.AbstractObserver));
+    }(Rx.Subscriber));
 
     Rx.Observable.prototype.digest = function($scope, prop) {
-      return new DigestObservable(this, $scope, prop);
+      var self = this;
+
+      var subscribeCore = function (o) {
+        var propSetter = $parse(prop).assign;
+        if (!propSetter) {
+          return o.error(new Error('Property or expression is not assignable.'));
+        }
+
+        var m = self.subscribe(new DigestObserver(o, $scope, propSetter));
+        $scope.$on('$destroy', function () { m.unsubscribe(); });
+
+        return m;
+      };
+
+      return Rx.Observable.create(subscribeCore);
     };
   }]);
 
@@ -588,7 +563,7 @@ function thrower(e) {
       __super__.call(this);
     }
 
-    Rx.internals.inherits(ScopeScheduler, __super__);
+    RxNg.inherits(ScopeScheduler, __super__);
 
     ScopeScheduler.prototype.schedule = function (state, action) {
       if (this.$scope.$$destroyed) { return Rx.Disposable.empty; }
@@ -627,7 +602,7 @@ function thrower(e) {
 
       return new Rx.BinaryDisposable(
         sad,
-        Rx.Disposable.create(function () { clearTimeout(id); })
+        new Rx.Subscription(function () { clearTimeout(id); })
       );
     };
 
@@ -649,7 +624,7 @@ function thrower(e) {
         }
       }, period);
 
-      return Rx.Disposable.create(function () { clearInterval(id); });
+      return new Rx.Subscription(function () { clearInterval(id); });
     };
 
     return ScopeScheduler;

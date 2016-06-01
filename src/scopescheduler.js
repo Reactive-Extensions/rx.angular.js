@@ -4,7 +4,7 @@
       __super__.call(this);
     }
 
-    Rx.internals.inherits(ScopeScheduler, __super__);
+    RxNg.inherits(ScopeScheduler, __super__);
 
     ScopeScheduler.prototype.schedule = function (state, action) {
       if (this.$scope.$$destroyed) { return Rx.Disposable.empty; }
@@ -43,7 +43,7 @@
 
       return new Rx.BinaryDisposable(
         sad,
-        Rx.Disposable.create(function () { clearTimeout(id); })
+        new Rx.Subscription(function () { clearTimeout(id); })
       );
     };
 
@@ -65,7 +65,7 @@
         }
       }, period);
 
-      return Rx.Disposable.create(function () { clearInterval(id); });
+      return new Rx.Subscription(function () { clearInterval(id); });
     };
 
     return ScopeScheduler;

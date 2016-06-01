@@ -17,7 +17,7 @@
   */
   rxModule.factory('observeOnScope', function(rx) {
     var ObserveOnScope = (function(__super__) {
-      rx.internals.inherits(ObserveOnScope, __super__);
+      RxNg.inherits(ObserveOnScope, __super__);
       function ObserveOnScope(scope, expr, eq) {
         this._scope = scope;
         this._expr = expr;

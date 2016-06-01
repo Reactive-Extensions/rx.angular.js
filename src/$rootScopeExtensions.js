@@ -38,14 +38,14 @@
                 return rx.Observable.create(function (observer) {
                   // Create function to handle old and new Value
                   function listener (newValue, oldValue) {
-                    observer.onNext({ oldValue: oldValue, newValue: newValue });
+                    observer.next({ oldValue: oldValue, newValue: newValue });
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watch(watchExpression, listener, objectEquality));
+                  var disposable = new rx.Subscription(scope.$watch(watchExpression, listener, objectEquality));
 
                   scope.$on('$destroy', function(){
-                      disposable.dispose();
+                      disposable.unsubscribe();
                   });
 
                   return disposable;
@@ -90,7 +90,7 @@
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watchCollection(watchExpression, listener));
+                  var disposable = new rx.Subscription(scope.$watchCollection(watchExpression, listener));
 
                   scope.$on('$destroy', function(){
                     disposable.dispose();
@@ -138,7 +138,7 @@
                   }
 
                   // Returns function which disconnects the $watch expression
-                  var disposable = rx.Disposable.create(scope.$watchGroup(watchExpressions, listener));
+                  var disposable = new rx.Subscription(scope.$watchGroup(watchExpressions, listener));
 
                   scope.$on('$destroy', function(){
                     disposable.dispose();
@@ -186,17 +186,17 @@
                 for (var i = 0; i < len; i++) { args[i] = arguments[i]; }
                 if (angular.isFunction(selector)) {
                   var result = tryCatch(selector).apply(null, args);
-                  if (result === errorObj) { return observer.onError(result.e); }
-                  observer.onNext(result);
+                  if (result === errorObj) { return observer.error(result.e); }
+                  observer.next(result);
                 } else if (args.length === 1) {
-                  observer.onNext(args[0]);
+                  observer.next(args[0]);
                 } else {
-                  observer.onNext(args);
+                  observer.next(args);
                 }
               }
 
               // Returns function which disconnects from the event binding
-              var disposable = rx.Disposable.create(scope.$on(eventName, listener));
+              var disposable = new rx.Subscription(scope.$on(eventName, listener));
 
               scope.$on('$destroy', function(){ disposable.dispose(); });
 
@@ -219,7 +219,7 @@
          * @name rx.$rootScope.$createObservableFunction
          *
          * @description
-         * Provides a method to create obsersables from functions.
+         * Provides a method to create observables from functions.
          */
         '$createObservableFunction': {
           /**
@@ -266,7 +266,10 @@
         '$digestObservables': {
           value: function(observables) {
             var scope = this;
-            return rx.Observable.pairs(observables)
+            var keyValuePairs = Object.keys(observables).map(function(key) {
+               return [key, observables[key]]
+              });
+            return rx.Observable.from(keyValuePairs)
               .flatMap(function(pair) {
                 return pair[1].digest(scope, pair[0])
                   .map(function(val) {
