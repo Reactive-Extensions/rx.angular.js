@@ -120,10 +120,6 @@ npm install -g rx-angular
 ```bash
 bower install angular-rx
 ```
-### Installing with [Jam](http://jamjs.org/)
-```bash
-jam install rx-angular
-```
 ### Installing All of RxJS via [NuGet](http://nuget.org/)
 ```PowerShell
 PM> Install-Package RxJS-Bridges-Angular
