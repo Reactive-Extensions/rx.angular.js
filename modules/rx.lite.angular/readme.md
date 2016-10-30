@@ -111,8 +111,8 @@ $ cd rx.angular.js/modules/rx.lite.angular
 ```
 ### Installing with [NPM](https://npmjs.org/)
 ```bash
-npm install rx-angular-lite
-npm install -g rx-angular-lite
+npm install rx-lite-angular
+npm install -g rx-lite-angular
 ```
 
 ## License ##
