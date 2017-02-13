@@ -1,6 +1,6 @@
   /**
   * @ngdoc service
-  * @name rx.observeOnSope
+  * @name rx.observeOnScope
   *
   * @requires rx.rx
   *
